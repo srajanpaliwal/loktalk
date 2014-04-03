@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.loctalk.R;
 import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -20,12 +21,14 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
-
+@SuppressLint("NewApi")
 public class MainActivity extends ActionBarActivity{
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
@@ -130,33 +133,61 @@ public class MainActivity extends ActionBarActivity{
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.activity_main_actions, menu);
+        return super.onCreateOptionsMenu(menu); 
 	}
 
+    boolean canAddItem = false;
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		 Toast toast;
+	        if(item.getItemId() == R.id.action_volume_muted){
+	            invalidateOptionsMenu();
+	        }
+	        else{
+	            toast = Toast.makeText(this, item.getTitle()+" Clicked!", Toast.LENGTH_SHORT);
+	            toast.show();
+	        }
+	 
+	        
+		
 		// toggle nav drawer on selecting action bar app icon/title
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 		// Handle action bar actions click
-		switch (item.getItemId()) {
-		case R.id.action_settings:
+		 if(item.getItemId() == R.id.action_settings)
+		 {
 			return true;
-		default:
+		 }
+		 else
 			return super.onOptionsItemSelected(item);
-		}
+		
 	}
+
 
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
 	 */
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		
 		// if nav drawer is opened, hide the action items
 		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		
+        if(canAddItem){
+            menu.getItem(0).setIcon(R.drawable.ic_action_volume_on);
+            canAddItem = false;
+        }
+        else{
+            menu.getItem(0).setIcon(R.drawable.ic_action_volume_muted);
+            canAddItem = true;
+        }
+ 
+
+		
 		return super.onPrepareOptionsMenu(menu);
 	}
 
