@@ -10,6 +10,12 @@
         android:title="@string/Muting"
         android:showAsAction="ifRoom|withText"/>
     <item
+        android:id="@+id/action_volume_on"
+        android:icon="@drawable/ic_action_volume_on"
+        android:title="@string/Unmuting"
+        android:showAsAction="ifRoom|withText"/>
+    
+    <item
         android:id="@+id/action_cancel"
         android:icon="@drawable/ic_action_cancel"
         android:title="@string/Blocking"

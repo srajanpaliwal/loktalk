@@ -138,13 +138,6 @@ public class MainActivity extends ActionBarActivity{
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		  // gets the activity's default ActionBar
-	
-		      //  ActionBar actionBar = getSupportActionBar();
-	
-		      //  actionBar.show();
-		
-
 		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_actions, menu);
         getSupportActionBar().setTitle("actionbar test");
@@ -155,12 +148,9 @@ public class MainActivity extends ActionBarActivity{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		 Toast toast;
-	        if(item.getItemId() == R.id.action_volume_muted){
-	            supportInvalidateOptionsMenu();
-	        }
-	        else{
-	            toast = Toast.makeText(this, item.getTitle()+" Clicked!", Toast.LENGTH_SHORT);
-	            toast.show();
+	        if(item != null){
+	        	 toast = Toast.makeText(this, item.getTitle()+" Clicked!", Toast.LENGTH_SHORT);
+		            toast.show();
 	        }
 	 
 	        
@@ -193,14 +183,15 @@ public class MainActivity extends ActionBarActivity{
 		//boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
 		//menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
 		
-        if(canAddItem){
+       /* if(canAddItem){
             menu.getItem(0).setIcon(R.drawable.ic_action_volume_on);
             canAddItem = false;
+            
         }
         else{
             menu.getItem(0).setIcon(R.drawable.ic_action_volume_muted);
             canAddItem = true;
-        }
+        }*/
  
        System.out.println("i m in onprepare");
 		
