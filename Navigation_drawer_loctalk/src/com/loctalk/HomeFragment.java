@@ -20,6 +20,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -59,6 +61,7 @@ public class HomeFragment extends ListFragment {
             Bundle savedInstanceState) {
  
         View rootView = inflater.inflate(R.layout.main, container, false);
+        setHasOptionsMenu(true);
         
         if (db == null)
 			db = new AppDB(getActivity());
@@ -155,6 +158,7 @@ public class HomeFragment extends ListFragment {
 //		
 		text = (EditText) getActivity().findViewById(R.id.text);
 		Button button = (Button)getActivity().findViewById(R.id.sendButton);
+		//setHasOptionsMenu(true);
 		
 		//sender = Utility.sender[rand.nextInt( Utility.sender.length-1)];
 		getActivity().setTitle(sender);

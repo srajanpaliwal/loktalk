@@ -373,6 +373,9 @@ int layout start 0x7f03001d
 int layout support_simple_spinner_dropdown_item 0x7f03001e
 int menu activity_main_actions 0x7f0d0000
 int menu main 0x7f0d0001
+int string Blocking 0x7f0a0015
+int string Muting 0x7f0a0014
+int string Searching 0x7f0a0016
 int string abc_action_bar_home_description 0x7f0a0001
 int string abc_action_bar_up_description 0x7f0a0002
 int string abc_action_menu_overflow_description 0x7f0a0003
@@ -388,7 +391,7 @@ int string abc_shareactionprovider_share_with 0x7f0a000c
 int string abc_shareactionprovider_share_with_application 0x7f0a000b
 int string action_settings 0x7f0a0010
 int string app_name 0x7f0a000e
-int string desc_list_item_icon 0x7f0a0014
+int string desc_list_item_icon 0x7f0a0017
 int string drawer_close 0x7f0a0013
 int string drawer_open 0x7f0a0012
 int string hello 0x7f0a000d

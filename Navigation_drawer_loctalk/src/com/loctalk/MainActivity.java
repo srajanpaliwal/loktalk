@@ -99,9 +99,10 @@ public class MainActivity extends ActionBarActivity{
 				R.string.app_name // nav drawer close - description for accessibility
 		) {
 			public void onDrawerClosed(View view) {
-				getSupportActionBar().setTitle(mTitle);
+				getSupportActionBar();
+				
 				// calling onPrepareOptionsMenu() to show action bar icons
-				supportInvalidateOptionsMenu();
+				//supportInvalidateOptionsMenu();
 			}
 
 			public void onDrawerOpened(View drawerView) {
@@ -130,20 +131,32 @@ public class MainActivity extends ActionBarActivity{
 			displayView(position);
 		}
 	}
+	
+	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		
+		  // gets the activity's default ActionBar
+	
+		      //  ActionBar actionBar = getSupportActionBar();
+	
+		      //  actionBar.show();
+		
+
 		MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.activity_main_actions, menu);
-        return super.onCreateOptionsMenu(menu); 
+        getSupportActionBar().setTitle("actionbar test");
+        getSupportActionBar().show();
+		return super.onCreateOptionsMenu(menu);
 	}
 
-    boolean canAddItem = false;
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		 Toast toast;
 	        if(item.getItemId() == R.id.action_volume_muted){
-	            invalidateOptionsMenu();
+	            supportInvalidateOptionsMenu();
 	        }
 	        else{
 	            toast = Toast.makeText(this, item.getTitle()+" Clicked!", Toast.LENGTH_SHORT);
@@ -157,11 +170,11 @@ public class MainActivity extends ActionBarActivity{
 			return true;
 		}
 		// Handle action bar actions click
-		 if(item.getItemId() == R.id.action_settings)
+	 if(item.getItemId() == R.id.action_settings)
 		 {
 			return true;
-		 }
-		 else
+	 }
+	
 			return super.onOptionsItemSelected(item);
 		
 	}
@@ -170,12 +183,15 @@ public class MainActivity extends ActionBarActivity{
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
 	 */
+	
+
+    boolean canAddItem = false;
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		
 		// if nav drawer is opened, hide the action items
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+		//boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+		//menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
 		
         if(canAddItem){
             menu.getItem(0).setIcon(R.drawable.ic_action_volume_on);
@@ -186,7 +202,7 @@ public class MainActivity extends ActionBarActivity{
             canAddItem = true;
         }
  
-
+       System.out.println("i m in onprepare");
 		
 		return super.onPrepareOptionsMenu(menu);
 	}

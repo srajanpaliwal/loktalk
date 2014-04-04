@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android" 
+ xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <!-- Search / will display always -->
-    <item android:id="@+id/action_volume_muted"
-          android:icon="@drawable/ic_action_volume_muted"
-          android:showAsAction="always"/>
-    
-    <item android:id="@+id/action_cancel"
-          android:icon="@drawable/ic_action_cancel"
-          android:showAsAction="always"/>
-     
-     <item android:id="@+id/action_search"
-          android:icon="@drawable/ic_action_search"
-          android:showAsAction="always"/>
-      
+
+    <item
+        android:id="@+id/action_volume_muted"
+        android:icon="@drawable/ic_action_volume_muted"
+        android:title="@string/Muting"
+        android:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/ic_action_cancel"
+        android:title="@string/Blocking"
+        android:showAsAction="ifRoom|withText"/>
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_action_search"
+        android:title="@string/Searching"
+        android:showAsAction="ifRoom|withText"/>
+
 </menu>
