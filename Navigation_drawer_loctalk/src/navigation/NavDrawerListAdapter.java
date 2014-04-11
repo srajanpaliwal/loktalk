@@ -5,9 +5,11 @@ import com.loctalk.R.color;
 import com.loctalk.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NavDrawerListAdapter extends BaseAdapter {
+	
+	int n[] = {R.color.holoblue,R.color.green};
 	
 	private Context context;
 	private ArrayList<NavDrawerItem> navDrawerItems;
@@ -46,13 +50,16 @@ public class NavDrawerListAdapter extends BaseAdapter {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.drawer_list_item, null);
+           
         }
          
-        ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+       ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+       Random random = new Random();
+       imgIcon.setBackgroundResource(n[random.nextInt(n.length)]);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
         TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
          
-        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
+       imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
         txtTitle.setText(navDrawerItems.get(position).getTitle());
         
         // displaying count

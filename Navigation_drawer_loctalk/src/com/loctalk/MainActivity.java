@@ -1,25 +1,22 @@
 package com.loctalk;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import com.loctalk.R;
 import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.net.DhcpInfo;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -30,7 +27,6 @@ import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity{
-	dataTransferInterface datatofragment;
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
@@ -46,13 +42,13 @@ public class MainActivity extends ActionBarActivity{
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private NavDrawerListAdapter adapter;
-	receiver receiverthread;
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		getBroadcastAddress();
+		
 		//super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
@@ -70,18 +66,30 @@ public class MainActivity extends ActionBarActivity{
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),true,"10"));
 		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// Communities, Will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(0, -1), true, "22"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		// Pages
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		// What's hot, We  will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(0, -1), true, "50+"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1),true,"10"));
 		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[10], navMenuIcons.getResourceId(10, -1),true,"20"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[11], navMenuIcons.getResourceId(11, -1)));
 		
 		navMenuIcons.recycle();
+		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the nav drawer list adapter
@@ -117,9 +125,6 @@ public class MainActivity extends ActionBarActivity{
 			// on first time display view for first nav item
 			displayView(0);
 		}
-		receiverthread=new receiver(mHandler);
-		receiverthread.start();
-		
 	}
 
 	/**
@@ -171,9 +176,9 @@ public class MainActivity extends ActionBarActivity{
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
 	String frag;
-	ListFragment listfragment = null;
-	ListFragment listfragment2 = null;
-	ListFragment listFragment3 = null;
+	static ListFragment listfragment = null;
+	static ListFragment listfragment2 = null;
+	static ListFragment listFragment3 = null;
 	int selected;
 	static Fragment fragment = null;
 	private void displayView(int position) {
@@ -184,7 +189,7 @@ public class MainActivity extends ActionBarActivity{
 		switch (position) {
 		case 0:
 			if(listfragment == null){
-				listfragment = new groupFragment();
+				listfragment = new HomeFragment();
 				selected=0;
 			}
 			else
@@ -194,15 +199,15 @@ public class MainActivity extends ActionBarActivity{
 			
 			break;
 		case 1:
-			/*if(listfragment2 == null){
-				listfragment2 = new HomeFragment2();
+			if(listfragment2 == null){
+				listfragment2 = new Addfragment();
 				selected=1;
 			}
 			else
 			{
 				selected=1;
 			}
-			break;*/
+			break;
 		case 2:
 			/*if(listFragment3 == null){
 				listFragment3 = new PeersFragment();
@@ -234,6 +239,7 @@ public class MainActivity extends ActionBarActivity{
 
 		switch(selected){
 		case 1:
+			try{
 			System.out.println("fragment is getting created");
 			FragmentTransaction ft =getSupportFragmentManager().beginTransaction();
 			ft.replace(R.id.frame_container, listfragment2);
@@ -243,6 +249,9 @@ public class MainActivity extends ActionBarActivity{
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
+			}catch(Exception e){
+				System.out.println("yaha aaya error!!!!!"+e);
+			}
 			break;
 		case 0:
 			System.out.println("fragment is getting created");
@@ -307,33 +316,11 @@ public class MainActivity extends ActionBarActivity{
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	void getBroadcastAddress() {
-	    WifiManager wifi = (WifiManager) super.getSystemService(Context.WIFI_SERVICE);
-	    DhcpInfo dhcp = wifi.getDhcpInfo();
-	    // handle null somehow
 
-	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
-	    byte[] quads = new byte[4];
-	    for (int k = 0; k < 4; k++)
-	      quads[k] = (byte) ((broadcast >> k * 8) & 0xFF);
-	    String s;
-		try {
-			s = InetAddress.getByAddress(quads).toString();
-			System.out.println("Extracted IP!!!!=====>"+s);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	}
 
-	private final Handler mHandler = new Handler() {
-	    @Override
-	    public void handleMessage(Message msg) {
-	    	System.out.println("message"+ msg.obj);
-	    	datatofragment.passdatatofragment(msg.toString());
-	    }
-	};
+
+		
+		
 		
 		
 	}
