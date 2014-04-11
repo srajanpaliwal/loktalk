@@ -13,8 +13,10 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.loctalk.database.AppDB;
+
 import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,12 +32,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements dataTransfertoActivityInterface{
@@ -71,6 +79,11 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			db = new AppDB(this);
 			dbFunctions=new dbFunc(db);
 		}
+		
+		 TelephonyManager mngr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
+		 System.out.println("IMEI===="+mngr.getDeviceId());
+		 myAppID = mngr.getDeviceId();
+		 
 		mTitle = mDrawerTitle = getTitle();
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 		
@@ -128,7 +141,58 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
-			displayView(0);
+			try{
+				String extractedNick  = db.getMyNick();
+			
+			if(extractedNick.equals("defaultnick")){
+				final Dialog dialog = new Dialog(this);
+				 dialog.setContentView(R.layout.change_nick);
+				 dialog.setTitle("Change Nick");	
+				 Button dialogButtonA = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				 Button dialogButtonC = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+
+				 //cancel button clicked
+				 dialogButtonC.setOnClickListener(new OnClickListener() {
+
+					 @Override
+					 public void onClick(View v) {
+						 dialog.cancel();
+					 }
+				 });
+
+				 //Go button clicked
+				 dialogButtonA.setOnClickListener(new OnClickListener() {
+					 @Override
+					 public void onClick(View v) {
+						 EditText location = (EditText)dialog.findViewById(R.id.location);
+						 
+						 
+						 String loc = location.getText().toString();
+						 if(!(loc.isEmpty())){
+							 db.insertmyNick(loc);
+							 myNick = loc;
+				
+						 }
+						 else{
+				 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);
+				 		 	 mtoast.show();
+						 }
+					 dialog.dismiss();
+
+
+					 }
+
+				 });
+
+				 dialog.show();
+			}
+
+			else
+				displayView(0);
+		}
+		catch(Exception e){
+			System.out.println("Error in getting nick"+e);
+		}
 		}
 		receiverthread=new receiver(mHandler);
 		receiverthread.start();
@@ -188,6 +252,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	ListFragment listfragment2 = null;
 	ListFragment listfragment3 = null;
 	ListFragment listfragment4 = null;
+	ListFragment listfragment5 = null;
+
 	int selected;
 	FragmentTransaction ft;
 	static Fragment fragment = null;
@@ -238,10 +304,51 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				selected=3;
 			}
 			break;
-		/*case 4:
-			fragment = new PagesFragment();
+		case 4:
+			//pop up a dialog box
+			 final Dialog dialog = new Dialog(this);
+			 dialog.setContentView(R.layout.change_nick);
+			 dialog.setTitle("Change Nick");	
+			 Button dialogButtonA = (Button) dialog.findViewById(R.id.dialogButtonOK);
+			 Button dialogButtonC = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+
+			 //cancel button clicked
+			 dialogButtonC.setOnClickListener(new OnClickListener() {
+
+				 @Override
+				 public void onClick(View v) {
+					 dialog.cancel();
+				 }
+			 });
+
+			 //Go button clicked
+			 dialogButtonA.setOnClickListener(new OnClickListener() {
+				 @Override
+				 public void onClick(View v) {
+					 EditText location = (EditText)dialog.findViewById(R.id.location);
+					 
+					 
+					 String loc = location.getText().toString();
+					 if(!(loc.isEmpty())){
+						 db.updatemyNick(loc);
+						 myNick = loc;
+						 System.out.println("updated nick===="+myNick);
+			
+					 }
+					 else{
+			 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);
+			 		 	 mtoast.show();
+					 }
+				 dialog.dismiss();
+
+
+				 }
+
+			 });
+
+			 dialog.show();
 			break;
-		case 5:
+		/*case 5:
 			fragment = new WhatsHotFragment();
 			break;*/
 
@@ -453,16 +560,18 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				}
 
 				else if(parsedStr[3].equals("chatReply")){
-
+					
 				}
 
 				else if(parsedStr[3].equals("peerReq")){
-
+					String toSend = jsonFunctions1.createUltiJSON(myAppID, myNick, "Hi peer", "peerReply");
+					senMain = new sender(toSend,recAr[1]);
+					senMain.start();
 
 				}
 
 				else if(parsedStr[3].equals("peerReply")){
-				
+					datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

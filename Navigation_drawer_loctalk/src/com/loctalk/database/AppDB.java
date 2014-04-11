@@ -40,6 +40,12 @@ public class AppDB extends DBConnect {
 		
 	}
  
+	public void insertmyNick(String ni){
+		String sqlCards;
+		sqlCards = String.format(ISql.INSERT_MYNICK, ni);
+		
+		execNonQuery(sqlCards);
+	}
 	/**
 	 * To insert Post
 	 * @param value
@@ -220,6 +226,37 @@ public class AppDB extends DBConnect {
 		return peerRet;
 		
 	}
+	
+	public String getMyNick()
+	{	//JSONObject objPeer;
+		String myNick = null ;
+		int temp=0;
+		//if(ID>0)
+		System.out.println("In getmynick()");
+		{
+			
+			Cursor cursor = execQuery(ISql.GET_MYNICK);
+			
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				while(cursor.moveToNext())
+				{
+				try {
+					myNick = cursor.getString(cursor.getColumnIndex("nick"));
+					temp++;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("getmynick error"+e);
+					e.printStackTrace();
+				}
+				}	
+			}
+		}
+		System.out.println("Count mynicktbl = "+temp);
+		return myNick;
+		
+	}
+	
 	/**
 	 * To count no. of Students
 	 * @return
@@ -270,6 +307,7 @@ public class AppDB extends DBConnect {
 	public void updPC(int status, String AppID){
 		int test = updatePC(status, AppID);
 	}
+	
 	
 	public int countChatReq()
 	{
