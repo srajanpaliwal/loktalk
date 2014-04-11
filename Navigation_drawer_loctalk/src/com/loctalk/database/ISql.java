@@ -19,4 +19,14 @@ public interface ISql {
 	String GET_ONEPEER = "SELECT AppID,Nick,IP,PC,Block FROM Peers WHERE AppID = %d";
 	String INSERT_CHATREQ = "INSERT OR REPLACE INTO ChatReq(AppID, Nick, MAC, IP, PC, Block) values (%d, '%s', '%s', '%s', %d, %d)";
 	String COUNT_CHATREQ = "SELECT count(AppID) from ChatReq";
+	
+	String INSERT_MYNICK = "INSERT OR REPLACE INTO myNickTbl(nick) values ('%s')";
+	String GET_MYNICK = "SELECT nick FROM myNickTbl";
+	
+	String INSERT_PREMIUM = "INSERT OR REPLACE INTO Premium(ID,AppID, Content, Time, Vote) values (%d, %d,'%s', '%s', %d)";
+	String GET_PREMIUM = "SELECT ID,AppID,Content,Time,Vote FROM Premium";
+	String REMOVE_PREMIUM = "DELETE FROM Premium WHERE ID = %d";
+	String GET_P_COUNT = "SELECT Vote FROM Premium WHERE ID = %d AND AppID = %d";
+	String GET_P_SENDER = "SELECT AppID FROM Premium WHERE ID = %d";
+	String COUNT_PREMIUM = "SELECT count(ID) from Premium";
 }

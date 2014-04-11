@@ -97,8 +97,8 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 
 			public void onClick(DialogInterface dialog, int which) {
 					String req = jsonFunctions1.createUltiJSON(myAppID,myNick,"Lets Talk", "chatReq");
-					//sen = new sender(req,peerInfo[2]);
-					//sen.start();
+					sen = new sender(req,peerInfo[2]);
+					sen.start();
 					System.out.println("==>><<=="+peerInfo[2]);
 						/*
 						 * changing the colour to yellow
@@ -131,7 +131,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 	public void passdatatopeerfragment(int PCstatus, String[] data,
 			String peerip) {
 		// TODO Auto-generated method stub
-		//dbFunctions.addtopeerdb(data[0], data[1], peerip, "0", "0");
+		dbFunctions.addtopeerdb(data[0], data[1], peerip, Integer.toString(PCstatus), "0");
 		if(PCstatus==0){
 			peerName.add(new peerData(data[1],PCstatus));
 			id.add(data[0]);

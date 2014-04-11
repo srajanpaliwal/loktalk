@@ -221,6 +221,14 @@ public class DBConnect extends SQLiteOpenHelper {
 		return n;
 		}
 	
+	public synchronized int updatemyNick(String newnick){
+		ContentValues cv = new ContentValues();
+		cv.put("nick", newnick);
+		return db.update("myNickTbl", cv, null, null);
+	}
+		
+	
+	
 	public void backup() {
 		try {
 			File sd = Environment.getExternalStorageDirectory();
