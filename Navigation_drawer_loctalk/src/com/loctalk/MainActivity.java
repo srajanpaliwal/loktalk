@@ -63,6 +63,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private TypedArray navMenuIcons;
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
+	private ArrayList<String> adRepliers = new ArrayList<String>();
 	private NavDrawerListAdapter adapter;
 	receiver receiverthread;
 	sender senMain;
@@ -72,6 +73,14 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//super.onCreate(savedInstanceState);
+		
+		/*
+		 * request people for premium ads table
+		 */
+		String adrequest = jsonFunctions1.createUltiJSON(myAppID, myNick, "need ads", "adReq");
+		senMain = new sender(adrequest, getBroadcastAddress());
+		senMain.start();
+		
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
 		//Initialization of database constants
@@ -489,20 +498,32 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	    		 */
 
 				String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
-
+				if(!(parsedStr[0].equals(myAppID))){
 				if(parsedStr[3].equals("adReq")){
-
+					String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
+					senMain = new sender(adRep,recAr[1]);
+					senMain.start();
 				}
 
 				else if(parsedStr[3].equals("adReply")){
-
+					if(adRepliers.size()==0){
+						String adseeker = jsonFunctions1.createUltiJSON(myAppID, myNick, "send ads", "adSeek");
+						senMain = new sender(adseeker, recAr[1]);
+						senMain.start();
+					}
+					
+					adRepliers.add(recAr[1]);
 				}
 
 				else if(parsedStr[3].equals("adSeek")){
+					String ads = jsonFunctions1.createUltiJSON(myAppID, myNick, dbFunctions.getAd(),"adSent");
+					senMain = new sender(ads, recAr[1]);
+					senMain.start();
 
 				}
 
 				else if(parsedStr[3].equals("adSent")){
+					dbFunctions.addtoaddb(parsedStr[2]);
 
 				}
 
@@ -515,6 +536,13 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				}
 
 				else if(parsedStr[3].equals("postAd")){
+					String ID=(db.countPremium()+1)+"";
+					Calendar c = Calendar.getInstance(); 
+					String time=c.getTime().toString();
+					dbFunctions.addonetoaddb(ID, parsedStr[0],parsedStr[2], time, parsedStr[3]);
+					Fragment frag=getSupportFragmentManager().findFragmentByTag("postAd");
+					if(frag.isVisible())
+					datatofragment.passdatatofragment("message",parsedStr[2]);
 
 				}
 
@@ -572,6 +600,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 
 				else if(parsedStr[3].equals("peerReply")){
 					datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
+				}
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
