@@ -13,8 +13,10 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.loctalk.database.AppDB;
+
 import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -30,12 +32,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.telephony.TelephonyManager;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity implements dataTransfertoActivityInterface{
@@ -55,6 +63,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private TypedArray navMenuIcons;
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
+	private ArrayList<String> adRepliers = new ArrayList<String>();
 	private NavDrawerListAdapter adapter;
 	receiver receiverthread;
 	sender senMain;
@@ -64,6 +73,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//super.onCreate(savedInstanceState);
+		
+		
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
 		//Initialization of database constants
@@ -71,6 +82,12 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			db = new AppDB(this);
 			dbFunctions=new dbFunc(db);
 		}
+		
+		 TelephonyManager mngr = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE); 
+		 System.out.println("IMEI===="+mngr.getDeviceId());
+		 int temp = (int) (Long.parseLong(mngr.getDeviceId())%10000007);
+		 myAppID = Integer.toString(temp);
+		 
 		mTitle = mDrawerTitle = getTitle();
 		navMenuTitles = getResources().getStringArray(R.array.nav_drawer_items);
 		
@@ -128,7 +145,75 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 
 		if (savedInstanceState == null) {
 			// on first time display view for first nav item
-			displayView(0);
+			try{
+				String extractedNick  = db.getMyNick();
+			
+			if(extractedNick.equals("defaultnick")){
+				final Dialog dialog = new Dialog(this);
+				 dialog.setContentView(R.layout.change_nick);
+				 dialog.setTitle("Change Nick");	
+				 Button dialogButtonA = (Button) dialog.findViewById(R.id.dialogButtonOK);
+				 Button dialogButtonC = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+
+				 //cancel button clicked
+				 dialogButtonC.setOnClickListener(new OnClickListener() {
+
+					 @Override
+					 public void onClick(View v) {
+						 dialog.cancel();
+					 }
+				 });
+
+				 //Go button clicked
+				 dialogButtonA.setOnClickListener(new OnClickListener() {
+					 @Override
+					 public void onClick(View v) {
+						 EditText location = (EditText)dialog.findViewById(R.id.location);
+						 
+						 
+						 String loc = location.getText().toString();
+						 if(!(loc.length()==0)){
+							 db.insertmyNick(loc);
+							 myNick = loc;
+							 /*
+								 * request people for premium ads table
+								 */
+								try{
+									String adrequest = jsonFunctions1.createUltiJSON(myAppID, myNick, "need ads", "adReq");
+								
+								senMain = new sender(adrequest, getBroadcastAddress());
+								senMain.start();
+								}
+								catch(Exception e){
+									System.out.println("error in nick ke baad ad broad"+e);
+								}
+								
+				
+						 }
+						 else{
+				 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);
+				 		 	 mtoast.show();
+						 }
+					 dialog.dismiss();
+					 displayView(0);
+
+
+					 }
+
+				 });
+
+				 dialog.show();
+			}
+
+			else{
+				displayView(0);
+				myNick = db.getMyNick();
+			}
+				
+		}
+		catch(Exception e){
+			System.out.println("Error in getting nick"+e);
+		}
 		}
 		receiverthread=new receiver(mHandler);
 		receiverthread.start();
@@ -188,6 +273,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	ListFragment listfragment2 = null;
 	ListFragment listfragment3 = null;
 	ListFragment listfragment4 = null;
+	ListFragment listfragment5 = null;
+
 	int selected;
 	FragmentTransaction ft;
 	static Fragment fragment = null;
@@ -238,10 +325,51 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				selected=3;
 			}
 			break;
-		/*case 4:
-			fragment = new PagesFragment();
+		case 4:
+			//pop up a dialog box
+			 final Dialog dialog = new Dialog(this);
+			 dialog.setContentView(R.layout.change_nick);
+			 dialog.setTitle("Change Nick");	
+			 Button dialogButtonA = (Button) dialog.findViewById(R.id.dialogButtonOK);
+			 Button dialogButtonC = (Button) dialog.findViewById(R.id.dialogButtonCancel);
+
+			 //cancel button clicked
+			 dialogButtonC.setOnClickListener(new OnClickListener() {
+
+				 @Override
+				 public void onClick(View v) {
+					 dialog.cancel();
+				 }
+			 });
+
+			 //Go button clicked
+			 dialogButtonA.setOnClickListener(new OnClickListener() {
+				 @Override
+				 public void onClick(View v) {
+					 EditText location = (EditText)dialog.findViewById(R.id.location);
+					 
+					 
+					 String loc = location.getText().toString();
+					 if(!(loc.length()==0)){
+						 db.updatemyNick(loc);
+						 myNick = loc;
+						 System.out.println("updated nick===="+myNick);
+			
+					 }
+					 else{
+			 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);
+			 		 	 mtoast.show();
+					 }
+				 dialog.dismiss();
+
+
+				 }
+
+			 });
+
+			 dialog.show();
 			break;
-		case 5:
+		/*case 5:
 			fragment = new WhatsHotFragment();
 			break;*/
 
@@ -382,20 +510,32 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	    		 */
 
 				String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
-
+				if(!(parsedStr[0].equals(myAppID))){
 				if(parsedStr[3].equals("adReq")){
-
+					String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
+					senMain = new sender(adRep,recAr[1]);
+					senMain.start();
 				}
 
 				else if(parsedStr[3].equals("adReply")){
-
+					if(adRepliers.size()==0){
+						String adseeker = jsonFunctions1.createUltiJSON(myAppID, myNick, "send ads", "adSeek");
+						senMain = new sender(adseeker, recAr[1]);
+						senMain.start();
+					}
+					
+					adRepliers.add(recAr[1]);
 				}
 
 				else if(parsedStr[3].equals("adSeek")){
+					String ads = jsonFunctions1.createUltiJSON(myAppID, myNick, dbFunctions.getAd(),"adSent");
+					senMain = new sender(ads, recAr[1]);
+					senMain.start();
 
 				}
 
 				else if(parsedStr[3].equals("adSent")){
+					dbFunctions.addtoaddb(parsedStr[2]);
 
 				}
 
@@ -408,6 +548,13 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				}
 
 				else if(parsedStr[3].equals("postAd")){
+					String ID=(db.countPremium()+1)+"";
+					Calendar c = Calendar.getInstance(); 
+					String time=c.getTime().toString();
+					dbFunctions.addonetoaddb(ID, parsedStr[0],parsedStr[2], time, parsedStr[3]);
+					Fragment frag=getSupportFragmentManager().findFragmentByTag("postAd");
+					if(frag.isVisible())
+					datatofragment.passdatatofragment("message",parsedStr[2]);
 
 				}
 
@@ -449,20 +596,35 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				}
 
 				else if(parsedStr[3].equals("chatReq")){
-
+					
 				}
 
 				else if(parsedStr[3].equals("chatReply")){
-
+					
 				}
 
 				else if(parsedStr[3].equals("peerReq")){
-
+					String toSend = jsonFunctions1.createUltiJSON(myAppID, myNick, "Hi peer", "peerReply");
+					senMain = new sender(toSend,recAr[1]);
+					senMain.start();
 
 				}
 
 				else if(parsedStr[3].equals("peerReply")){
-				
+					int id = Integer.parseInt(parsedStr[0]);
+					try{
+					String[] pcdata = db.getOnePeer(id);
+					if(pcdata[0].equals(Integer.toString(id)))
+						datatopeerfragment.passdatatopeerfragment(1, parsedStr,recAr[1]);
+					else
+						datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
+					}catch(Exception e){
+						System.out.println("Get One peer array"+e);
+						datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
+					}
+					//System.out.println("#######> Got the PC as: "+Integer.parseInt(pcdata[3]));
+					
+				}
 				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

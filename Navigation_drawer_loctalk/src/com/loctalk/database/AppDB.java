@@ -1,6 +1,7 @@
 package com.loctalk.database;
 
 import java.util.ArrayList;
+import static com.loctalk.Constant.myAppID;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +41,12 @@ public class AppDB extends DBConnect {
 		
 	}
  
+	public void insertmyNick(String ni){
+		String sqlCards;
+		sqlCards = String.format(ISql.INSERT_MYNICK, ni);
+		
+		execNonQuery(sqlCards);
+	}
 	/**
 	 * To insert Post
 	 * @param value
@@ -112,6 +119,24 @@ public class AppDB extends DBConnect {
 	public int countPost()
 	{
 		Cursor cursor = execQuery(ISql.COUNT_Post);
+		int cntCards = 0;
+		
+		if(cursor!=null && cursor.getCount()>0) {
+			cursor.moveToNext();
+			cntCards = Integer.parseInt(cursor.getString(0));
+		}
+		
+		if(cursor!= null) {
+			cursor.close();
+		}
+			
+		return cntCards;
+	}
+	
+	
+	public int countPremium()
+	{
+		Cursor cursor = execQuery(ISql.COUNT_PREMIUM);
 		int cntCards = 0;
 		
 		if(cursor!=null && cursor.getCount()>0) {
@@ -201,8 +226,11 @@ public class AppDB extends DBConnect {
 			Cursor cursor = execQuery(sqlRemoveRegCard);
 			if(cursor!=null){
 				//objPeer = new JSONObject();
+				System.out.println("getonepeer cursor0"+cursor);
 				
-				if (cursor.moveToNext()) {
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepeer cursor1"+cursor);
 				try {
 					peerRet[0] = String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID")));
 					peerRet[1] = cursor.getString(cursor.getColumnIndex("Nick"));
@@ -213,6 +241,7 @@ public class AppDB extends DBConnect {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println("getonepeer err"+e);
 				}
 				}	
 			}
@@ -220,6 +249,37 @@ public class AppDB extends DBConnect {
 		return peerRet;
 		
 	}
+	
+	public String getMyNick()
+	{	//JSONObject objPeer;
+		String myNick = null ;
+		int temp=0;
+		//if(ID>0)
+		System.out.println("In getmynick()");
+		{
+			
+			Cursor cursor = execQuery(ISql.GET_MYNICK);
+			
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				while(cursor.moveToNext())
+				{
+				try {
+					myNick = cursor.getString(cursor.getColumnIndex("nick"));
+					temp++;
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					System.out.println("getmynick error"+e);
+					e.printStackTrace();
+				}
+				}	
+			}
+		}
+		System.out.println("Count mynicktbl = "+temp);
+		return myNick;
+		
+	}
+	
 	/**
 	 * To count no. of Students
 	 * @return
@@ -269,7 +329,9 @@ public class AppDB extends DBConnect {
 	 */
 	public void updPC(int status, String AppID){
 		int test = updatePC(status, AppID);
+		System.out.println("PC Updated with message: "+test+"<-----");
 	}
+	
 	
 	public int countChatReq()
 	{
@@ -361,5 +423,131 @@ public class AppDB extends DBConnect {
 		}
 
 		return listPeer;
+	}
+	
+	
+	public ArrayList<JSONObject> getPremium() {
+		Cursor cursor = execQuery(ISql.GET_PREMIUM);
+
+		ArrayList<JSONObject> listPremium = new ArrayList<JSONObject>();
+		JSONObject obj;
+		
+		if (cursor != null && cursor.getCount() > 0) {
+
+			if (cursor.moveToNext()) {
+
+				do {
+					obj = new JSONObject();
+					
+					try {
+						obj.put("ID", String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						obj.put("AppID", String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
+						obj.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
+						obj.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
+						obj.put("Vote", cursor.getString(cursor.getColumnIndex("Vote")));
+						listPremium.add(obj);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} while (cursor.moveToNext());
+			}
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return listPremium;
+	}
+
+public void insertPremium(JSONObject objPremium) {
+		String sqlCards;
+		System.out.println("Insertpremium AppDB called via db.insertpremium()");
+		try {
+			sqlCards = String.format(ISql.INSERT_PREMIUM, Integer.parseInt(objPremium.getString("ID")), 
+					Integer.parseInt(objPremium.getString("AppID")),
+					objPremium.getString("Content"),
+					objPremium.getString("Time"),
+					Integer.parseInt(objPremium.getString("Vote")));
+					
+			System.out.println("Inserted into premium DB==="+objPremium.getString("AppID"));
+			
+			execNonQuery(sqlCards);			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+	}
+
+public void upVote(String adID,String senderID){
+		//adding to table Premium the vote count
+		String sqlCards;
+		System.out.println("Increment ad in AppDB called via db.incrementVote()");
+		try {
+			sqlCards = String.format(ISql.GET_P_COUNT, Integer.parseInt(adID), 
+					Integer.parseInt(senderID));
+			Cursor cursor = execQuery(sqlCards);
+			
+			int vote ;
+			if (cursor != null && cursor.getCount() > 0) {
+
+				if (cursor.moveToNext()) {
+					vote = cursor.getInt(cursor.getColumnIndex("Vote"));
+					int n = updateAdd(Integer.toString(vote), adID, senderID);
+					
+					System.out.println("Upvoted ad in premium DB==="+senderID);
+				}
+			}
+			
+								
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		
+		
+	}
+	
+public void removePremium(String adID){
+		
+		String sqlCards;
+		System.out.println("Remove ad in AppDB called via db.removeAd()");
+		try {
+			sqlCards = String.format(ISql.GET_P_SENDER, Integer.parseInt(adID));
+			Cursor cursor = execQuery(sqlCards);
+			
+			int sender ;
+			if (cursor != null && cursor.getCount() > 0) {
+
+				if (cursor.moveToNext()) {
+					sender = cursor.getInt(cursor.getColumnIndex("AppID"));
+					if (sender!=Integer.parseInt(myAppID)){ // here myappID is our ID, import it from whereever u know
+						System.out.println("Permission denied.");
+					}
+					else{
+						String str = String.format(ISql.REMOVE_PREMIUM, adID);
+						execNonQuery(str);
+					}
+				}
+			}
+								
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		
+		
+		
 	}
 }

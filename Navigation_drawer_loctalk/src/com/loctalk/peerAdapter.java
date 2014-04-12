@@ -80,7 +80,7 @@ public class peerAdapter extends BaseAdapter {
 	
 class peerData{
 	String name;
-	int status;
+	static int status;
 		/*
 		 * Status = 0 ==> nothing yet.
 		 * Status = 1 ==> pending request, i.e. request is sent.

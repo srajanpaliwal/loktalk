@@ -22,13 +22,69 @@ public class dbFunc {
 	
 	
 	public String getAd(){
-		return "";
+		JSONArray listPremium = new JSONArray();
+
+		ArrayList<JSONObject> a = db.getPremium();
+		 for(int i=0;i<a.size();i++){
+			 listPremium.put(a.get(i));
+		 }
+		return listPremium.toString();
 	}
 	
-	public void addtoaddb(String s){
+	public void addonetoaddb(String id, String appID, String content, String time, String vote){
 		
-		
+		System.out.println("function addtoaddb() called!!!");
+		JSONObject objPremium = new JSONObject();
+				
+		try {
+			objPremium.put("ID", id);
+			objPremium.put("AppID", appID);
+			objPremium.put("Content", content);
+			objPremium.put("Time", time);
+			objPremium.put("Vote", vote);
+			System.out.println("Jason string for db==>>"+"\n"+objPremium.toString());
+			db.insertPremium(objPremium);
+			
+			//setListAdapter(new ArrayAdapter<String>(peerActivity.this, android.R.layout.simple_list_item_1, ar));
+			
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			System.out.println("PremiumDB error"+ e.getMessage().toString());
+					
+		}
 	}
+	
+	
+	public void incrementVote(String adID,String senderID){
+		//adding to table Premium the vote count
+		db.upVote(adID,senderID);
+	}
+	
+	
+	
+	
+public void addtoaddb(String dbString) throws JSONException{
+		
+		JSONArray ja = new JSONArray(dbString);
+		int size = ja.length();
+		
+		JSONObject current = null;
+		
+		for(int i =0;i<size;i++){
+				current = ja.getJSONObject(i);
+				db.insertPremium(current);
+				
+			
+		}
+		
+		
+		System.out.println("function addtoaddb() called!!!");
+		
+			//setListAdapter(new ArrayAdapter<String>(peerActivity.this, android.R.layout.simple_list_item_1, ar));
+			
+					
+		}
 	
 	public void incrementVote(String adID){
 		//adding to table Premium the vote count

@@ -87,19 +87,28 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 	public void onListItemClick(ListView l, View v, final int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		final int index = position;
-		String tempid = this.id.get(index);
+		final String tempid = this.id.get(index);
+		System.out.println(tempid+"This is tempid====>>>>");
 		int ti = Integer.parseInt(tempid);
 		final String peerInfo[] = db.getOnePeer(ti);
+		System.out.println("PeerInfo2"+peerInfo[2]);
+		if(peerInfo[3].equals("0")){
 		AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-		alert.setTitle("Send request"+peerName.get(index));
+		alert.setTitle("Send request to "+peerName.get(index).name);
 		alert.setMessage("Need to send request For Chat first!!!");
 		alert.setButton(alert.BUTTON_NEUTRAL, "Send Request", new DialogInterface.OnClickListener() {
 
 			public void onClick(DialogInterface dialog, int which) {
 					String req = jsonFunctions1.createUltiJSON(myAppID,myNick,"Lets Talk", "chatReq");
-					//sen = new sender(req,peerInfo[2]);
-					//sen.start();
+					try{
+					sen = new sender(req,peerInfo[2]);
+					sen.start();
+					}catch(Exception e){
+						System.out.println("sender's problem====="+e);
+					}
 					System.out.println("==>><<=="+peerInfo[2]);
+					System.out.println("Updating PC!!!!!!!!!!!!!");
+					db.updPC(1, tempid);
 						/*
 						 * changing the colour to yellow
 						 */
@@ -116,6 +125,23 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 			}
 		});
 		alert.show();
+		}
+		else if(peerInfo[3].equals("1")){
+			AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
+			alert.setTitle("Aur kitna chodega "+peerInfo[1]+" ko");
+			alert.setMessage("Intezaar kar MADARCHODD!! ");
+			alert.setButton(alert.BUTTON_NEUTRAL, "Okay!", new DialogInterface.OnClickListener() {
+
+				public void onClick(DialogInterface dialog, int which) {
+						
+				}
+			});
+			
+			alert.show();
+		}
+		else if(peerInfo[3].equals("3")){
+			// Start PM Activity.
+		}
 
 	}
 	
@@ -131,20 +157,28 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 	public void passdatatopeerfragment(int PCstatus, String[] data,
 			String peerip) {
 		// TODO Auto-generated method stub
-		//dbFunctions.addtopeerdb(data[0], data[1], peerip, "0", "0");
-		if(PCstatus==0){
+		System.out.println("pass to peer data fragment func called!!!!!!!!");
+		
+		for(int z=0; z<id.size();z++){
+			System.out.println("====Arraylist ID==="+id.get(z));
+		}
+		int id1 = Integer.parseInt(data[0]);
+		try{
+		String[] pcdata = db.getOnePeer(id1);
+		
+		if(!(pcdata[0].equals(data[0])))
+			dbFunctions.addtopeerdb(data[0], data[1], peerip, Integer.toString(PCstatus), "0");
+		
 			peerName.add(new peerData(data[1],PCstatus));
 			id.add(data[0]);
-		}
-		else if (PCstatus==2){
-			/*
-			 * finding the index in the list peerName where
-			 * status has to be changed and then changing it.
-			 */
+		}catch(Exception e){
+			System.out.println("passtodatapeerfragment...."+e);
+			dbFunctions.addtopeerdb(data[0], data[1], peerip, Integer.toString(PCstatus), "0");
+			peerName.add(new peerData(data[1],PCstatus));
+			id.add(data[0]);
 			
-			int m = id.indexOf(data[0]);
-			peerName.get(m).status=2;
 		}
+
 		adapter.notifyDataSetChanged();
 		//addtopeerlistview(peerName);
 	}

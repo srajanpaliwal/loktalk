@@ -218,8 +218,17 @@ public class DBConnect extends SQLiteOpenHelper {
 		cv.put("PC", values);
 		String where = "AppID="+appID;
 		int n = db.update("Peers", cv, where, null);
+		System.out.println("---->PC Updated with message: "+n);
 		return n;
 		}
+	
+	public synchronized int updatemyNick(String newnick){
+		ContentValues cv = new ContentValues();
+		cv.put("nick", newnick);
+		return db.update("myNickTbl", cv, null, null);
+	}
+		
+	
 	
 	public void backup() {
 		try {

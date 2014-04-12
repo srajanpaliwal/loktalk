@@ -6,6 +6,8 @@ import org.json.JSONObject;
 public class jsonSolver {
 
 	public String createUltiJSON(String AppID, String Nick,  String Msg, String Flag){
+		
+		System.out.println("Received values AppID="+AppID+"   Nick="+Nick+"  Msg="+Msg+"  Flag="+Flag);
 		JSONObject objCreate = new JSONObject();
 		String toreturn = "";
 		try{
