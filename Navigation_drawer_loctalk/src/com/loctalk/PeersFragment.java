@@ -129,7 +129,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 		else if(peerInfo[3].equals("1")){
 			AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
 			alert.setTitle("Aur kitna chodega "+peerInfo[1]+" ko");
-			alert.setMessage("Intezaar kar MADARCHODD!! ");
+			alert.setMessage("please wait");
 			alert.setButton(alert.BUTTON_NEUTRAL, "Okay!", new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {
@@ -139,7 +139,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 			
 			alert.show();
 		}
-		else if(peerInfo[3].equals("3")){
+		else if(peerInfo[3].equals("2")){
 			// Start PM Activity.
 		}
 
