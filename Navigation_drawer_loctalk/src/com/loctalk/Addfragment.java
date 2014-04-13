@@ -1,9 +1,6 @@
 package com.loctalk;
 
 import java.util.ArrayList;
-
-
-
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -47,10 +44,7 @@ public class Addfragment  extends ListFragment {
 		//list.setAdapter(new AdAdapter(getActivity(), llist));
 		adapter = new AdAdapter(getActivity(), llist);
 		setListAdapter(adapter);
-	}
-		
-		
-		
+	}	
 	}
 	
 	

@@ -19,20 +19,41 @@
     <!-- Nav Drawer Menu Items -->
     <string-array name="nav_drawer_items">
         <item >Nick</item>
-        <item >Chat</item>
+        <item >Ad</item>
+        <item >General</item>
+        <item >Event</item>
+        <item >Help</item>
+        <item >Business</item>
+        <item >Food</item>
         <item >Peers</item>
-        <item >Advertisements</item>
-        <item >Queries</item>
-        <item >What\'s Hot</item>
+        <item >Chat</item>
+        <item >Chat Request</item>
+        <item >Notifications</item>
+        <item >Settings</item>
+        
+        <item> </item>
     </string-array>
     
     <!-- Nav Drawer List Item Icons -->
     <!-- Keep them in order as the titles are in -->
-    <array name="nav_drawer_icons">
-        <item>@drawable/ic_home</item>
-       
-    </array>
+     <array name="nav_drawer_icons">
+        <item>@drawable/ic_action_person</item>
+        <item>@drawable/shopping_bag</item>
+        <item>@drawable/agt_announcements</item>
+        <item>@drawable/dance</item>
+        <item>@drawable/ic_action_help</item>
+        <item>@drawable/coin_dollar</item>
+        <item>@drawable/icon_food_01</item>
+        <item>@drawable/ic_action_cc_bcc</item>
+        <item>@drawable/ic_action_name</item>
+      <item>@drawable/ic_action_add_person</item>
+        <item>@drawable/ic_action_about</item>
+        <item>@drawable/ic_action_settings</item>
+        
+        
+           </array>
     
     <!-- Content Description -->
     <string name="desc_list_item_icon">Item Icon</string>
+ 
 </resources>

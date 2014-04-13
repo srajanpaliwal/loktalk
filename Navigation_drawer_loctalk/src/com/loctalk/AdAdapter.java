@@ -1,11 +1,6 @@
 package com.loctalk;
 
 import java.util.ArrayList;
-
-
-
-
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.TextureView;
@@ -71,6 +66,7 @@ public class AdAdapter extends BaseAdapter {
 	class single_row{
 		String title;
 		String description;
+
 		
 		
 		

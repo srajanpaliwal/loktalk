@@ -1,5 +1,6 @@
 package com.loctalk;
 
+
 import static com.loctalk.Constant.db;
 import static com.loctalk.Constant.dbFunctions;
 import static com.loctalk.Constant.jsonFunctions1;
@@ -13,7 +14,7 @@ import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.loctalk.database.AppDB;
-
+import com.loctalk.R;
 import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
 import android.app.Dialog;
@@ -28,9 +29,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
@@ -44,6 +48,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
 
 
 public class MainActivity extends ActionBarActivity implements dataTransfertoActivityInterface{
@@ -65,6 +70,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private ArrayList<String> adRepliers = new ArrayList<String>();
 	private NavDrawerListAdapter adapter;
+
 	receiver receiverthread;
 	sender senMain;
 	
@@ -100,18 +106,30 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		navDrawerItems = new ArrayList<NavDrawerItem>();
 		navDrawerItems.add(new NavDrawerItem(navMenuTitles[0], navMenuIcons.getResourceId(0, -1)));
 		// Find People
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[1], navMenuIcons.getResourceId(1, -1),true,"10"));
 		// Photos
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[2], navMenuIcons.getResourceId(2, -1)));
 		// Communities, Will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(0, -1), true, "22"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[3], navMenuIcons.getResourceId(3, -1)));
 		// Pages
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(0, -1)));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[4], navMenuIcons.getResourceId(4, -1)));
 		// What's hot, We  will add a counter here
-		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(0, -1), true, "50+"));
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[5], navMenuIcons.getResourceId(5, -1),true,"10"));
 		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[6], navMenuIcons.getResourceId(6, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[7], navMenuIcons.getResourceId(7, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[8], navMenuIcons.getResourceId(8, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[9], navMenuIcons.getResourceId(9, -1),true,"10"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[10], navMenuIcons.getResourceId(10, -1),true,"20"));
+		
+		navDrawerItems.add(new NavDrawerItem(navMenuTitles[11], navMenuIcons.getResourceId(11, -1)));
 		
 		navMenuIcons.recycle();
+		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the nav drawer list adapter
@@ -215,9 +233,6 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			System.out.println("Error in getting nick"+e);
 		}
 		}
-		receiverthread=new receiver(mHandler);
-		receiverthread.start();
-		
 	}
 
 	/**
@@ -268,13 +283,13 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	/**
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
+
 	String frag;
 	ListFragment listfragment = null;
 	ListFragment listfragment2 = null;
 	ListFragment listfragment3 = null;
 	ListFragment listfragment4 = null;
 	ListFragment listfragment5 = null;
-
 	int selected;
 	FragmentTransaction ft;
 	static Fragment fragment = null;
@@ -286,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		switch (position) {
 		case 0:
 			if(listfragment == null){
-				listfragment = new groupFragment();
+				listfragment = new HomeFragment();
 				selected=0;
 			}
 			else
@@ -298,6 +313,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		case 1:
 			if(listfragment2 == null){
 				listfragment2 = new Addfragment();
+
 				selected=1;
 			}
 			else
@@ -396,7 +412,6 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
-			
 			break;
 		case 0:
 			try{
@@ -487,7 +502,6 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
-	
 
 	private final Handler mHandler = new Handler() {
 	    @Override
@@ -641,7 +655,6 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	    WifiManager wifi = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 	    DhcpInfo dhcp = wifi.getDhcpInfo();
 	    // handle null somehow
-
 	    int broadcast = (dhcp.ipAddress & dhcp.netmask) | ~dhcp.netmask;
 	    byte[] quads = new byte[4];
 	    for (int k = 0; k < 4; k++)
@@ -688,11 +701,11 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			System.out.println("DB error"+ e.getMessage().toString());
 		}
 	}
-
 	@Override
 	public void passdatatoActivity() {
 		datatofragment.passdatatofragment("ip",getBroadcastAddress());
 	}
+
 	}
 	
 
