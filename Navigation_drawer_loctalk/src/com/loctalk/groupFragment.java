@@ -96,7 +96,7 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 	public void onAttach(Activity activity){
 		  super.onAttach(activity);
 		  Activity context = getActivity();
-		  ((MainActivity)context).datatofragment = this;
+		//  ((MainActivity)context).datatofragment = this;
 		}
 	@Override
 	public void onStart() {
