@@ -128,8 +128,8 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 		}
 		else if(peerInfo[3].equals("1")){
 			AlertDialog alert = new AlertDialog.Builder(getActivity()).create();
-			alert.setTitle("Aur kitna chodega "+peerInfo[1]+" ko");
-			alert.setMessage("please wait");
+			alert.setTitle("Your request has been sent to"+peerInfo[1]);
+			alert.setMessage("Please wait fot the response");
 			alert.setButton(alert.BUTTON_NEUTRAL, "Okay!", new DialogInterface.OnClickListener() {
 
 				public void onClick(DialogInterface dialog, int which) {

@@ -79,8 +79,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//super.onCreate(savedInstanceState);
-		
-		
+		receiverthread=new receiver(mHandler);
+		receiverthread.start();
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
 		//Initialization of database constants
@@ -213,7 +213,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				 		 	 mtoast.show();
 						 }
 					 dialog.dismiss();
-					 displayView(0);
+					 displayView(1);
 
 
 					 }
@@ -224,7 +224,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			}
 
 			else{
-				displayView(0);
+				displayView(1);
 				myNick = db.getMyNick();
 			}
 				
@@ -284,187 +284,111 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	 * Diplaying fragment view for selected nav drawer list item
 	 * */
 
-	String frag;
-	ListFragment listfragment = null;
-	ListFragment listfragment2 = null;
-	ListFragment listfragment3 = null;
-	ListFragment listfragment4 = null;
-	ListFragment listfragment5 = null;
+String frag;
+ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	int selected;
 	FragmentTransaction ft;
+	Bundle bundl;
 	static Fragment fragment = null;
 	private void displayView(int position) {
+		int i;
+		for(i=0;i<12;i++){
+			fragmentList.add(i,null);
+		}
 		// update the main content by replacing fragments
-		Fragment fragment = null;
+		ListFragment fragment = null;
 		
 		//ListFragment listfragment = null;
 		switch (position) {
 		case 0:
-			if(listfragment == null){
-				listfragment = new HomeFragment();
-				selected=0;
-			}
-			else
-			{
-				selected=0;
-			}
-			
+			showdialog();
 			break;
 		case 1:
-			if(listfragment2 == null){
-				listfragment2 = new Addfragment();
-
-				selected=1;
+			if(fragmentList.get(1)==null){
+				fragment=new Addfragment();
+				fragmentList.set(1, fragment);
+				makeFrag(position,"postAd", fragment);
 			}
 			else
 			{
-				selected=1;
+				fragment=fragmentList.get(1);
+				makeFrag(position,"postAd", fragment);
 			}
 			break;
 		case 2:
-			if(listfragment3 == null){
-				listfragment3 = new PeersFragment();
-				selected=2;
+			if(fragmentList.get(2)==null){
+				fragment=new groupFragment();
+				fragmentList.set(2, fragment);
+				makeFrag(position,"postGen", fragment);
 			}
 			else
 			{
-				selected=2;
+				fragment=fragmentList.get(2);
+				makeFrag(position,"postGen", fragment);
 			}
 			break;
 		case 3:
-			if(listfragment4 == null){
-				listfragment4 = new groupFragment();
-				selected=3;
+			if(fragmentList.get(3)==null){
+				fragment=new groupFragment();
+				fragmentList.set(3, fragment);
+				makeFrag(position,"postEvent", fragment);
 			}
 			else
 			{
-				selected=3;
+				fragment=fragmentList.get(3);
+				makeFrag(position,"postEvent", fragment);
 			}
 			break;
 		case 4:
-			//pop up a dialog box
-			 final Dialog dialog = new Dialog(this);
-			 dialog.setContentView(R.layout.change_nick);
-			 dialog.setTitle("Change Nick");	
-			 Button dialogButtonA = (Button) dialog.findViewById(R.id.dialogButtonOK);
-			 Button dialogButtonC = (Button) dialog.findViewById(R.id.dialogButtonCancel);
-
-			 //cancel button clicked
-			 dialogButtonC.setOnClickListener(new OnClickListener() {
-
-				 @Override
-				 public void onClick(View v) {
-					 dialog.cancel();
-				 }
-			 });
-
-			 //Go button clicked
-			 dialogButtonA.setOnClickListener(new OnClickListener() {
-				 @Override
-				 public void onClick(View v) {
-					 EditText location = (EditText)dialog.findViewById(R.id.location);
-					 
-					 
-					 String loc = location.getText().toString();
-					 if(!(loc.length()==0)){
-						 db.updatemyNick(loc);
-						 myNick = loc;
-						 System.out.println("updated nick===="+myNick);
-			
-					 }
-					 else{
-			 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);
-			 		 	 mtoast.show();
-					 }
-				 dialog.dismiss();
-
-
-				 }
-
-			 });
-
-			 dialog.show();
+			if(fragmentList.get(4)==null){
+				fragment=new groupFragment();
+				fragmentList.set(4, fragment);
+				makeFrag(position,"postHelp", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(4);
+				makeFrag(position,"postHelp", fragment);
+			}
 			break;
-		/*case 5:
-			fragment = new WhatsHotFragment();
-			break;*/
-
+		case 5:
+			if(fragmentList.get(5)==null){
+				fragment=new groupFragment();
+				fragmentList.set(5, fragment);
+				makeFrag(position,"postBusi", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(5);
+				makeFrag(position,"postBusi", fragment);
+			}
+			break;
+		case 6:
+			if(fragmentList.get(6)==null){
+				fragment=new groupFragment();
+				fragmentList.set(6, fragment);
+				makeFrag(position,"postFood", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(5);
+				makeFrag(position,"postFood", fragment);
+			}
+			break;
+		case 7:
+			if(fragmentList.get(7)==null){
+				fragment=new PeersFragment();
+				fragmentList.set(7, fragment);
+				makeFrag(position,"Peers", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(5);
+				makeFrag(position,"Peers", fragment);
+			}
+			break;
 		default:
 			break;
-		}
-		Bundle bundl;
-		
-		switch(selected){
-		case 2:
-		try{
-			System.out.println("fragment--peer is getting created");
-			bundl = new Bundle();
-			bundl.putString("flag", "Group1");
-			bundl.putString("broadip", getBroadcastAddress());
-			listfragment3.setArguments(bundl);
-			ft =getSupportFragmentManager().beginTransaction();
-			ft.replace(R.id.frame_container, listfragment3);
-			ft.commit();
-			}catch(Exception e){
-				System.out.println("yaha aaya error!!!!!"+e);
-			}	
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 0:
-			try{
-			System.out.println("fragment--0 is getting created");
-			bundl = new Bundle();
-			bundl.putString("flag", "postGen");
-			listfragment.setArguments(bundl);
-			ft =getSupportFragmentManager().beginTransaction();
-			ft.replace(R.id.frame_container, listfragment,"postGen");
-			ft.commit();
-			}
-			catch (Exception e) {
-				System.out.println("Error in frag,ent switch=====>"+e);
-			}
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
-			mDrawerLayout.closeDrawer(mDrawerList);
-			
-			break;
-		case 1:
-			System.out.println("fragment is getting created");
-			FragmentTransaction ft2 =getSupportFragmentManager().beginTransaction();
-			ft2.replace(R.id.frame_container, listfragment2);
-			//ft.addToBackStack(frag);
-			ft2.commit();
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
-			mDrawerLayout.closeDrawer(mDrawerList);
-			break;
-		case 3:
-			try{
-			System.out.println("fragment--0 is getting created");
-			bundl = new Bundle();
-			bundl.putString("flag", "postEvent");
-			listfragment4.setArguments(bundl);
-			ft =getSupportFragmentManager().beginTransaction();
-			ft.replace(R.id.frame_container, listfragment4,"postEvent");
-			ft.commit();
-			}
-			catch (Exception e) {
-				System.out.println("Error in frag,ent switch=====>"+e);
-			}
-			mDrawerList.setItemChecked(position, true);
-			mDrawerList.setSelection(position);
-			setTitle(navMenuTitles[position]);
-			mDrawerLayout.closeDrawer(mDrawerList);
-			
-			break;	
-		default:
-			// error in creating fragment
-			Log.e("MainActivity", "Error in creating fragment");
 		}
 	}
 	
@@ -524,7 +448,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	    		 */
 
 				String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
-				if(!(parsedStr[0].equals(myAppID))){
+				if((parsedStr[0].equals(myAppID))){
 				if(parsedStr[3].equals("adReq")){
 					String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
 					senMain = new sender(adRep,recAr[1]);
@@ -594,15 +518,33 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 				}
 
 				else if(parsedStr[3].equals("postHelp")){
-
+					String ID=(db.countPost()+1)+"";
+					Calendar c = Calendar.getInstance(); 
+					String time=c.getTime().toString();
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					Fragment frag=getSupportFragmentManager().findFragmentByTag("postHelp");
+					if(frag.isVisible())
+					datatofragment.passdatatofragment("message",msg.toString());
 				}
 
 				else if(parsedStr[3].equals("postBusi")){
-
+					String ID=(db.countPost()+1)+"";
+					Calendar c = Calendar.getInstance(); 
+					String time=c.getTime().toString();
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					Fragment frag=getSupportFragmentManager().findFragmentByTag("postBusi");
+					if(frag.isVisible())
+					datatofragment.passdatatofragment("message",msg.toString());
 				}
 
 				else if(parsedStr[3].equals("postFood")){
-
+					String ID=(db.countPost()+1)+"";
+					Calendar c = Calendar.getInstance(); 
+					String time=c.getTime().toString();
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					Fragment frag=getSupportFragmentManager().findFragmentByTag("postFood");
+					if(frag.isVisible())
+					datatofragment.passdatatofragment("message",msg.toString());
 				}
 
 				else if(parsedStr[3].equals("chatMsg")){
@@ -705,7 +647,68 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	public void passdatatoActivity() {
 		datatofragment.passdatatofragment("ip",getBroadcastAddress());
 	}
+	public void showdialog(){
+		//pop up a dialog box
+		 final Dialog dialog = new Dialog(this);
+		 dialog.setContentView(R.layout.change_nick);
+		 dialog.setTitle("Change Nick");	
+		 Button dialogButtonA = (Button) dialog.findViewById(R.id.dialogButtonOK);
+		 Button dialogButtonC = (Button) dialog.findViewById(R.id.dialogButtonCancel);
 
+		 //cancel button clicked
+		 dialogButtonC.setOnClickListener(new OnClickListener() {
+
+			 @Override
+			 public void onClick(View v) {
+				 dialog.cancel();
+			 }
+		 });
+
+		 //Go button clicked
+		 dialogButtonA.setOnClickListener(new OnClickListener() {
+			 @Override
+			 public void onClick(View v) {
+				 EditText location = (EditText)dialog.findViewById(R.id.location);
+				 
+				 
+				 String loc = location.getText().toString();
+				 if(!(loc.length()==0)){
+					 db.updatemyNick(loc);
+					 myNick = loc;
+					 System.out.println("updated nick===="+myNick);
+		
+				 }
+				 else{
+		 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);
+		 		 	 mtoast.show();
+				 }
+			 dialog.dismiss();
+
+
+			 }
+
+		 });
+
+		 dialog.show();
+	}
+	public void makeFrag(int position,String flag , ListFragment fragment) {
+		try{
+			System.out.println("fragmentis getting created");
+			bundl = new Bundle();
+			bundl.putString("flag", flag);
+			bundl.putString("broadip", getBroadcastAddress());
+			fragment.setArguments(bundl);
+			ft =getSupportFragmentManager().beginTransaction();
+			ft.replace(R.id.frame_container,fragment,flag);
+			ft.commit();
+			}catch(Exception e){
+				System.out.println("yaha aaya error!!!!!"+e);
+			}	
+			mDrawerList.setItemChecked(position, true);
+			mDrawerList.setSelection(position);
+			setTitle(navMenuTitles[position]);
+			mDrawerLayout.closeDrawer(mDrawerList);
+	}
 	}
 	
 
