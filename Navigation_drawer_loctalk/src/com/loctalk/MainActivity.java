@@ -448,7 +448,15 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	    		 */
 
 				String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
-				if(!(parsedStr[0].equals(myAppID))){
+				/*
+				 * parsedStr[0] = appID
+				 * parsedStr[1] = nick
+				 * parsedStr[2] = msg
+				 * parsedStr[3] = flag
+				 */
+				
+				
+				if(!(parsedStr[0].equals(myAppID))){					//if the message is not mine
 				if(parsedStr[3].equals("adReq")){
 					String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
 					senMain = new sender(adRep,recAr[1]);

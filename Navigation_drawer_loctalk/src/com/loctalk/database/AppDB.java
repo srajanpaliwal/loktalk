@@ -428,7 +428,9 @@ public class AppDB extends DBConnect {
 	
 	public ArrayList<JSONObject> getPremium() {
 		Cursor cursor = execQuery(ISql.GET_PREMIUM);
-
+		/*
+		 * testing added
+		 */
 		ArrayList<JSONObject> listPremium = new ArrayList<JSONObject>();
 		JSONObject obj;
 		System.out.println("Retrieving cursor"+cursor);

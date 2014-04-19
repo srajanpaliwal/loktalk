@@ -203,6 +203,10 @@ public class DBConnect extends SQLiteOpenHelper {
 		}
 		return cursor;
 	}
+	
+	/*
+	 * updated upvote func
+	 */
 
 	public synchronized int updateAdd(String values, String adContent, String appID){
 		ContentValues cv = new ContentValues();
