@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,7 +86,7 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 		else
 		{
 			messages = new ArrayList<Message1>();
-			messages.add(new Message1("Hello", false));
+		//	messages.add(new Message1("Hello", false));
 			adapter = new AwesomeAdapter(getActivity(), messages);
 			setListAdapter(adapter);
 		}
@@ -101,15 +102,16 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 	}
 	public void sendMessage(View v)
 	{
-		String newMessage = text.getText().toString().trim(); 
-		if(newMessage.length() > 0)
+		 
+		SpannableString newMessage = new SpannableString(text.getText().toString().trim());
+		if(newMessage.toString().length() > 0)
 		{
 			text.setText("");
 			addNewMessages(new Message1(newMessage, true));
 			//new SendMessage().execute();
 		}
 		try{
-			String se = jsonFunctions1.createUltiJSON(myAppID,myNick, newMessage, groupFlag);
+			String se = jsonFunctions1.createUltiJSON(myAppID,myNick, newMessage.toString(), groupFlag);
 			sen= new sender(se,broad);
 			sen.start();
 			}
@@ -132,7 +134,7 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 	{
 		
 		System.out.println("Enter add message for send"+m.getMessage());
-		if(!(m.message.length()==0))
+		if(!(m.mymes.length()==0))
 		{
 			System.out.println("Enter add message 1");
 		messages.add(m);
@@ -155,7 +157,7 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 		super.onDestroyView();
 	}
 	
-	public void addmsg(String msg){
+	public void addmsg(SpannableString msg){
 		addNewMessages(new Message1(msg, false));
 		return;
 	}
@@ -166,8 +168,9 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 			broad=msg;
 		}
 		else
-		{
-			addNewMessages(new Message1(msg, false));
+		{   
+			SpannableString msg1 = new SpannableString(msg);
+			addNewMessages(new Message1(msg1, false));
 		}
 		return;
 	}
@@ -177,4 +180,6 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 		// TODO Auto-generated method stub
 		
 	}
+	
+
 }
