@@ -19,6 +19,7 @@ import android.app.ListActivity;
 import android.app.ListFragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.text.format.Time;
 import android.view.View;
 import android.widget.EditText;
@@ -157,7 +158,8 @@ public class pmchat extends ListActivity {
 			System.out.println("pm daal rahe hain list me");
 			
 			String print = newMessage + "\n" +now.toString().substring(9, 12);
-			addNewMessage(new Message1(print, true));
+			SpannableString print1 = new SpannableString(print);
+			addNewMessage(new Message1(print1, true));
 			new SendMessage().execute();
 		}
 		
@@ -247,7 +249,8 @@ public class pmchat extends ListActivity {
 	
 			if(!(text.length()==0)){
 			System.out.println("pm onPostExec!!!!====>"+text+"==== length===="+text.length());
-			addNewMessage(new Message1(text, false)); // add to the listview bubble.
+			SpannableString text1 = new SpannableString(text);
+			addNewMessage(new Message1(text1, false)); // add to the listview bubble.
 			
 			}
 		}

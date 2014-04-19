@@ -17,6 +17,7 @@ import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -159,13 +160,13 @@ public class HomeFragment extends ListFragment {
 		getActivity().setTitle(sender);
 		messages = new ArrayList<Message1>();
 
-		messages.add(new Message1("Hello", false));
+		/*messages.add(new Message1("Hello", false));
 		messages.add(new Message1("Hi!", true));
 		messages.add(new Message1("Wassup??", false));
 		messages.add(new Message1("nothing much, working on speech bubbles.", true));
 		messages.add(new Message1("you say!", true));
 		messages.add(new Message1("oh thats great. how are you showing them", false));
-		
+		*/
 
 		adapter = new AwesomeAdapter(getActivity(), messages);
 		setListAdapter(adapter);
@@ -231,7 +232,8 @@ public class HomeFragment extends ListFragment {
 		if(newMessage.length() > 0)
 		{
 			text.setText("");
-			addNewMessagessend(new Message1(newMessage, true));
+			SpannableString newMessage1 = new SpannableString(newMessage);
+			addNewMessagessend(new Message1(newMessage1, true));
 			//new SendMessage().execute();
 		}
 		
@@ -254,7 +256,7 @@ public class HomeFragment extends ListFragment {
 	
 	public void sendMessage(View v,String message)
 	{
-		String newMessage = message; 
+		SpannableString newMessage = new SpannableString(message); 
 		if(newMessage.length() > 0)
 		{
 			text.setText("");
@@ -270,7 +272,7 @@ public class HomeFragment extends ListFragment {
 		//to.show();
 		//System.out.println("added to db!!===>>>"+i);
 		try{
-			String se = createJSON(newMessage,"Yeh msg hai");
+			String se = createJSON(newMessage.toString(),"Yeh msg hai");
 			sen= new sender(se,broad);
 			sen.start();}
 			catch(Exception e){
@@ -400,7 +402,8 @@ public class HomeFragment extends ListFragment {
 			System.out.println("onPostExec!!!!====>"+text+"==== length===="+text.length());
 			
 			System.out.println("starting this thing from receivver"+Thread.currentThread().getId());
-			addNewMessagesrec(new Message1(text, false)); // add the orignal message from server.
+			SpannableString text1 = new SpannableString(text);
+			addNewMessagesrec(new Message1(text1, false)); // add the orignal message from server.
 			}
 			//socket.close();
 		}
@@ -412,13 +415,13 @@ public class HomeFragment extends ListFragment {
 	{
 		try{
 			System.out.println("Enter add message"+m.getMessage());
-			if(m.getMessage()=="doing this start it again on emptystring"){
+			if(m.getMessage().toString()=="doing this start it again on emptystring"){
 				//receiver.cancel(true);
 				receiver=new SendMessage();
 				receiver.execute();
 				
 			}
-			else if(m.getMessage()!=sender+" : "+"please kill every thing before you moveon")
+			else if(m.getMessage().toString()!=sender+" : "+"please kill every thing before you moveon")
 			{
 		
 		if(!(m.message.length()==0))

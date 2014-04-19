@@ -12,6 +12,10 @@ import org.json.JSONObject;
 import com.loctalk.database.AppDB;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 
 public class dbFunc {
 	
@@ -189,13 +193,49 @@ public ArrayList<Message1> getpostdb(String Category){
 			System.out.println("===========>"+Post.get(i).get("Content")+Post.get(i).get("Time"));
 			if(AppID.equals(myAppID))
 			{
-					pmessage=new Message1(myNick+Post.get(i).get("Content")+Post.get(i).get("Time"),true);//add time here
+					String mymes = Post.get(i).get("Content").toString();
+					int length_of_content = mymes.length();
+					String nickname = myNick;
+					int length_of_nick = nickname.length();
+					String mestime = Post.get(i).get("Time").toString();
+					String finalmes = nickname+"\n"+"\n"+mymes+"\n"+"\n"+mestime;
+					int timestartindex = length_of_nick + length_of_content + 2;
+					
+					SpannableString ss1 = new SpannableString(finalmes);
+					ss1.setSpan(new RelativeSizeSpan(0.85f), 0,length_of_nick, 0); // set size
+					ss1.setSpan(new RelativeSizeSpan(0.70f), timestartindex,finalmes.length(), 0); // set size
+					ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, length_of_nick, 0);// set color
+					ss1.setSpan(new ForegroundColorSpan(Color.MAGENTA),timestartindex,finalmes.length(), 0);// set color
+					//String myspanstr = ss1.toString();
+					System.out.println(ss1);
+					System.out.println("hhhhhhhhhh");
+					pmessage = new Message1(ss1,true);
+					//pmessage=new Message1(myNick+Post.get(i).get("Content")+Post.get(i).get("Time"),true);//add time here
 				
 			}
 			else
-			{
-					pmessage=new Message1(db.getOnePeer(Integer.parseInt(AppID))[1]+Post.get(i).get("Content")+Post.get(i).get("Time"),false);//add time here
+			{       
+				String mymes = Post.get(i).get("Content").toString();
+				int length_of_content = mymes.length();
+				String nickname = myNick;
+				int length_of_nick = nickname.length();
+				String mestime = Post.get(i).get("Time").toString();
+				String finalmes = nickname+"\n"+"\n"+mymes+"\n"+"\n"+mestime;
+				int timestartindex = length_of_nick + length_of_content + 2;
+				
+				SpannableString ss1 = new SpannableString(finalmes);
+				ss1.setSpan(new RelativeSizeSpan(0.85f), 0,length_of_nick, 0); // set size
+				ss1.setSpan(new RelativeSizeSpan(0.70f), timestartindex,finalmes.length(), 0); // set size
+				ss1.setSpan(new ForegroundColorSpan(Color.BLUE), 0, length_of_nick, 0);// set color
+				ss1.setSpan(new ForegroundColorSpan(Color.MAGENTA),timestartindex,finalmes.length(), 0);// set color
+				//String myspanstr = ss1.toString();
+				System.out.println(ss1);
+				System.out.println("hhhhhhhhhh");
+				pmessage = new Message1(ss1,true);
+				//pmessage=new Message1(db.getOnePeer(Integer.parseInt(AppID))[1]+Post.get(i).get("Content")+Post.get(i).get("Time"),false);//add time here
 			}
+			
+			
 			Posttoreturn.add(Posttoreturn.size(),pmessage);
 			for(j=0;j<=Posttoreturn.size()-1;j++)
 			{

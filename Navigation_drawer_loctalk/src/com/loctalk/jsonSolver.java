@@ -3,17 +3,19 @@ package com.loctalk;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.text.SpannableString;
+
 public class jsonSolver {
 
-	public String createUltiJSON(String AppID, String Nick,  String Msg, String Flag){
+	public String createUltiJSON(String AppID, String Nick,  String newMessage, String Flag){
 		
-		System.out.println("Received values AppID="+AppID+"   Nick="+Nick+"  Msg="+Msg+"  Flag="+Flag);
+		System.out.println("Received values AppID="+AppID+"   Nick="+Nick+"  Msg="+newMessage+"  Flag="+Flag);
 		JSONObject objCreate = new JSONObject();
 		String toreturn = "";
 		try{
 		objCreate.put("AppID", AppID);
 		objCreate.put("Nick", Nick);
-		objCreate.put("Msg", Msg);
+		objCreate.put("Msg", newMessage);
 		objCreate.put("Flag", Flag);
 		System.out.println("Jason string after creatingUltiJSON==="+"\n"+objCreate.toString());
 		toreturn = objCreate.toString();
@@ -39,4 +41,6 @@ public class jsonSolver {
 		
 		
 	}
+
+
 }

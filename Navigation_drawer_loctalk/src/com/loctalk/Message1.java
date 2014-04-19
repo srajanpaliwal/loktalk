@@ -1,5 +1,7 @@
 package com.loctalk;
 
+import android.text.SpannableString;
+
 /**
  * Message is a Custom Object to encapsulate message information/fields
  * 
@@ -11,6 +13,7 @@ public class Message1 {
 	 * The content of the message
 	 */
 	String message;
+	SpannableString mymes;
 	/**
 	 * boolean to determine, who is sender of this message
 	 */
@@ -24,24 +27,33 @@ public class Message1 {
 	/**
 	 * Constructor to make a Message object
 	 */
-	public Message1(String message, boolean isMine) {
+/*	public Message1(String message, boolean isMine) {
 		super();
 		this.message = message;
 		this.isMine = isMine;
 		this.isStatusMessage = false;
+	}*/
+	
+	public Message1(SpannableString message, boolean isMine) {
+		super();
+		this.mymes = message;
+		this.isMine = isMine;
+		this.isStatusMessage = false;
 	}
-	public void add(String message, boolean isMine) {
+	 
+	public void add(SpannableString message, boolean isMine) {
 		
-		this.message = message;
+		this.mymes = message;
 		this.isMine = isMine;
 		this.isStatusMessage = false;
 		return;
 	}
-	public String getMessage() {
-		return message;
+	public SpannableString getMessage() {
+		return mymes;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	
+	public void setMessage(SpannableString message) {
+		this.mymes = message;
 	}
 	public boolean isMine() {
 		return isMine;
