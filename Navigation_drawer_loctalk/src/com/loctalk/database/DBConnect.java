@@ -204,11 +204,11 @@ public class DBConnect extends SQLiteOpenHelper {
 		return cursor;
 	}
 
-	public synchronized int updateAdd(String values, String id, String appID){
+	public synchronized int updateAdd(String values, String adContent, String appID){
 		ContentValues cv = new ContentValues();
 		cv.put("Vote", values);
-		String where = "ID=? AND AppID=?";
-		String whereArgs[] = new String[]{id,appID};
+		String where = "AppID=? AND Content=?";
+		String whereArgs[] = new String[]{appID,adContent};
 		int n = db.update("Premium", cv, where, whereArgs);
 		return n;
 		}
