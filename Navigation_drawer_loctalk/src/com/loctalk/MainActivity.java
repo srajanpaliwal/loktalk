@@ -237,6 +237,10 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			else{
 				displayView(1);
 				myNick = db.getMyNick();
+				String adrequest = jsonFunctions1.createUltiJSON(myAppID, myNick, "need ads", "adReq");
+				
+				senMain = new sender(adrequest, getBroadcastAddress());
+				senMain.start();
 			}
 				
 		}

@@ -66,14 +66,10 @@ public class peer_chatreq_Adapter extends BaseAdapter {
 			holder.tv = (TextView) convertView.findViewById(R.id.nick);
 			holder.flip=(ViewFlipper)convertView.findViewById(R.id.flipper);
 			holder.flip.setInAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left));
-			//vf.setDisplayedChild(0);
-			//ViewFlipper temp =(ViewFlipper)vi.findViewById(R.id.flipper);
-			//holder.rl=(RelativeLayout)temp.findViewById(0);
 			System.out.println(holder.flip.getDisplayedChild());
 			convertView.setTag(holder);
 		}
 		else{
-			//System.out.println(holder.flip.getDisplayedChild());
 			holder = (Req_ViewHolder)convertView.getTag();
 		}
 			Button acceptBt = (Button) convertView.findViewById(R.id.Accept);
@@ -81,14 +77,10 @@ public class peer_chatreq_Adapter extends BaseAdapter {
 			acceptBt.setOnClickListener(new View.OnClickListener(){
 				@Override
 				public void onClick(View v){
-					//(Toast.makeText(getContext(), "Accepted", 1)).show();
-					//vf.setDisplayedChild(1);
-					//holder.flip.showNext();
 					holder.flip.setDisplayedChild(1);
 					
-					System.out.println(holder.flip.getDisplayedChild());
-					//System.out.println(vf.isFlipping());
-					//System.out.println(vf.getVisibility());
+					//System.out.println(holder.flip.getDisplayedChild());
+					
 				}
 			
 			});
@@ -97,12 +89,9 @@ public class peer_chatreq_Adapter extends BaseAdapter {
 			rejectBt.setOnClickListener(new View.OnClickListener(){
 				@Override
 				public void onClick(View v){
-					//(Toast.makeText(getContext(), "Rejected", 1)).show();
-					//holder.flip.showNext();
 					holder.flip.setDisplayedChild(2);
-					System.out.println(holder.flip.getDisplayedChild());
-					//vf.setDisplayedChild(R.id.second);
-					
+					//System.out.println(holder.flip.getDisplayedChild());
+						
 				}
 				
 			});
