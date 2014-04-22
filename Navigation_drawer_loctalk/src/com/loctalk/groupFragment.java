@@ -6,6 +6,8 @@ import static com.loctalk.Constant.jsonFunctions1;
 import static com.loctalk.Constant.myAppID;
 import static com.loctalk.Constant.myNick;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import android.widget.ImageButton;
 import org.json.JSONObject;
 import android.app.Activity;
@@ -106,6 +108,10 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 		{
 			text.setText("");
 			addNewMessages(new Message1(newMessage, true));
+			String ID=(db.countPost()+1)+"";
+			Calendar c = Calendar.getInstance(); 
+			String time=c.getTime().toString();
+			dbFunctions.addtopostdb(ID, myAppID, newMessage, time, "postGen");
 			//new SendMessage().execute();
 		}
 		try{

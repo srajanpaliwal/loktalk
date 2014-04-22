@@ -66,21 +66,40 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private CharSequence mTitle;
 	private String[] navMenuTitles;
 	private TypedArray navMenuIcons;
+	public static boolean active=false;
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private ArrayList<String> adRepliers = new ArrayList<String>();
 	private NavDrawerListAdapter adapter;
+	public static Handler mHandler;
 
 	receiver receiverthread;
+	receiverser recser;
 	sender senMain;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		active=true;
+		initHandler();
+		//recser = new receiverser();
+		recser = new receiverser(mHandler);
+		if(!(receiverser.sactive)){
+			//Start the service as it is not running.
+			
+			Intent in = new Intent(MainActivity.this, receiverser.class);
+			MainActivity.this.startService(in);
+		}
+		
+		else{
+			// Service is already running.
+			
+		}
+		
 		//super.onCreate(savedInstanceState);
-		receiverthread=new receiver(mHandler);
-		receiverthread.start();
+//		receiverthread=new receiver(mHandler);
+//		receiverthread.start();
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
 		//Initialization of database constants
@@ -233,6 +252,27 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			System.out.println("Error in getting nick"+e);
 		}
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see android.support.v7.app.ActionBarActivity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		active=false;
+		//receiverthread.closesocket();
+		super.onStop();
+	}
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.FragmentActivity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		active=true;
+		super.onResume();
 	}
 
 	/**
@@ -427,7 +467,8 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	}
 
 
-	private final Handler mHandler = new Handler() {
+	public void initHandler(){
+	mHandler = new Handler() {
 	    @Override
 	    public void handleMessage(Message msg) {
 	    	/*
@@ -448,7 +489,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	    		 */
 
 				String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
-				if((parsedStr[0].equals(myAppID))){
+				if(!(parsedStr[0].equals(myAppID))){
 				if(parsedStr[3].equals("adReq")){
 					String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
 					senMain = new sender(adRep,recAr[1]);
@@ -590,6 +631,9 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 
 	    }
 	};
+	}
+	
+
 
 	String getBroadcastAddress() {
 		String s;
