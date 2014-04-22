@@ -8,6 +8,7 @@ import java.util.Random;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 public class NavDrawerListAdapter extends BaseAdapter {
 	
 	int n[] = {R.color.holoblue,R.color.green};
+	
 	
 	private Context context;
 	private ArrayList<NavDrawerItem> navDrawerItems;
@@ -70,7 +72,13 @@ public class NavDrawerListAdapter extends BaseAdapter {
         	txtCount.setVisibility(View.GONE);
         }
         
+                
         return convertView;
 	}
+	
+	public void updateData(Cursor cursor){
+        	
+        	notifyDataSetChanged();
+    }
 
 }

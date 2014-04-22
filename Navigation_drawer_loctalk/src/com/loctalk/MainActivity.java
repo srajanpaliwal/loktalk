@@ -6,15 +6,19 @@ import static com.loctalk.Constant.dbFunctions;
 import static com.loctalk.Constant.jsonFunctions1;
 import static com.loctalk.Constant.myAppID;
 import static com.loctalk.Constant.myNick;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.loctalk.database.AppDB;
 import com.loctalk.R;
+
 import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
 import android.app.Dialog;
@@ -38,6 +42,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
+import android.text.style.UpdateLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -61,7 +66,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 
 	// nav drawer title
 	private CharSequence mDrawerTitle;
-
+	
 	// used to store app title
 	private CharSequence mTitle;
 	private String[] navMenuTitles;
@@ -130,12 +135,14 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		
 		navMenuIcons.recycle();
 		
+		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the nav drawer list adapter
 		adapter = new NavDrawerListAdapter(getApplicationContext(),
 				navDrawerItems);
 		mDrawerList.setAdapter(adapter);
+		
 
 		// enabling action bar app icon and behaving it as toggle button
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -150,12 +157,16 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			public void onDrawerClosed(View view) {
 				getSupportActionBar().setTitle(mTitle);
 				// calling onPrepareOptionsMenu() to show action bar icons
+				
 				supportInvalidateOptionsMenu();
+				
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				getSupportActionBar().setTitle(mDrawerTitle);
 				// calling onPrepareOptionsMenu() to hide action bar icons
+				
+				
 				supportInvalidateOptionsMenu();
 			}
 		};
@@ -267,7 +278,11 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+		
+		
 	}
+	
+	
 
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
@@ -315,6 +330,18 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 				makeFrag(position,"postAd", fragment);
 			}
 			break;
+		case 8:
+			if(fragmentList.get(8)==null){
+				fragment=new personalchat();
+				fragmentList.set(8, fragment);
+				makeFrag(position,"perchat", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(8);
+				makeFrag(position,"perchat", fragment);
+			}
+			break;
 		case 2:
 			if(fragmentList.get(2)==null){
 				fragment=new groupFragment();
@@ -337,6 +364,18 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 			{
 				fragment=fragmentList.get(3);
 				makeFrag(position,"postEvent", fragment);
+			}
+			break;
+		case 9:
+			if(fragmentList.get(9)==null){
+				fragment=new chat_reqFrag();
+				fragmentList.set(9, fragment);
+				makeFrag(position,"chatreq", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(9);
+				makeFrag(position,"chatreq", fragment);
 			}
 			break;
 		case 4:
