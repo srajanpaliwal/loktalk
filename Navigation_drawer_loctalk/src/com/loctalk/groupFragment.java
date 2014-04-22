@@ -67,8 +67,11 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		System.out.println("oncreate homefragment!!");
-		text = (EditText) getActivity().findViewById(R.id.text);
+		/* System.out.println("oncreate addb check!!");
+		ArrayList<JSONObject> j = new ArrayList<JSONObject>();
+		j = db.getPremium();
+		System.out.println("===ADS DB=="+j.get(0).toString());
+*/		text = (EditText) getActivity().findViewById(R.id.text);
 		ImageButton button = (ImageButton)getActivity().findViewById(R.id.sendButton);	
 		ArrayList<JSONObject> Posts;
 		int i;

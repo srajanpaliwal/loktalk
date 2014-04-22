@@ -428,27 +428,37 @@ public class AppDB extends DBConnect {
 	
 	public ArrayList<JSONObject> getPremium() {
 		Cursor cursor = execQuery(ISql.GET_PREMIUM);
-
+		/*
+		 * testing added
+		 */
 		ArrayList<JSONObject> listPremium = new ArrayList<JSONObject>();
 		JSONObject obj;
-		
+		System.out.println("Retrieving cursor"+cursor);
 		if (cursor != null && cursor.getCount() > 0) {
 
 			if (cursor.moveToNext()) {
 
 				do {
 					obj = new JSONObject();
+					System.out.println("Using cursor");
 					
 					try {
 						obj.put("ID", String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						System.out.println(String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						obj.put("Nick", cursor.getString(cursor.getColumnIndex("Nick")));
+						System.out.println(cursor.getString(cursor.getColumnIndex("Nick")));
 						obj.put("AppID", String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
+						System.out.println(String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
 						obj.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
+						System.out.println(cursor.getString(cursor.getColumnIndex("Content")));
 						obj.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
 						obj.put("Vote", cursor.getString(cursor.getColumnIndex("Vote")));
 						listPremium.add(obj);
+						
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.out.println("Err in getpremium=="+e);
 					}
 					
 				} while (cursor.moveToNext());
@@ -466,7 +476,8 @@ public void insertPremium(JSONObject objPremium) {
 		String sqlCards;
 		System.out.println("Insertpremium AppDB called via db.insertpremium()");
 		try {
-			sqlCards = String.format(ISql.INSERT_PREMIUM, Integer.parseInt(objPremium.getString("ID")), 
+			sqlCards = String.format(ISql.INSERT_PREMIUM, Integer.parseInt(objPremium.getString("ID")),
+					objPremium.getString("Nick"),
 					Integer.parseInt(objPremium.getString("AppID")),
 					objPremium.getString("Content"),
 					objPremium.getString("Time"),

@@ -10,7 +10,7 @@ public interface ISql {
 	String REMOVE_MSG = "DELETE FROM Messages WHERE ID = %d";
 	String COUNT_MSG = "SELECT count(ID) from Messages";
 	
-	//String GET_STUDENTS = "Select * from tblStudent";
+	//String GET_STUDENTS = "Select * from tblStudent" ;
 	
 	String INSERT_PEER = "INSERT OR REPLACE INTO Peers(AppID, Nick, MAC, IP, PC, Block) values (%d, '%s', '%s', '%s', %d, %d)";
 	String GET_PEER = "SELECT AppID,Nick,MAC,IP,PC,Block FROM Peers";
@@ -23,8 +23,8 @@ public interface ISql {
 	String INSERT_MYNICK = "INSERT OR REPLACE INTO myNickTbl(nick) values ('%s')";
 	String GET_MYNICK = "SELECT nick FROM myNickTbl";
 	
-	String INSERT_PREMIUM = "INSERT OR REPLACE INTO Premium(ID,AppID, Content, Time, Vote) values (%d, %d,'%s', '%s', %d)";
-	String GET_PREMIUM = "SELECT ID,AppID,Content,Time,Vote FROM Premium";
+	String INSERT_PREMIUM = "INSERT OR REPLACE INTO Premium(ID, Nick, AppID, Content, Time, Vote) values (%d, '%s', %d,'%s', '%s', %d)";
+	String GET_PREMIUM = "SELECT ID,Nick,AppID,Content,Time,Vote FROM Premium";
 	String REMOVE_PREMIUM = "DELETE FROM Premium WHERE ID = %d";
 	String GET_P_COUNT = "SELECT Vote FROM Premium WHERE ID = %d AND AppID = %d";
 	String GET_P_SENDER = "SELECT AppID FROM Premium WHERE ID = %d";
