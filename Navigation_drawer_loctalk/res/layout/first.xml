@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+<!--  ListRow Left side Thumbnail image -->
+    <LinearLayout android:id="@+id/thumbnail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="3dip"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="5dip"
+        android:layout_marginTop="5dip"
+        >
+ 
+        <ImageView
+            android:id="@+id/list_image"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:src="@drawable/ic_action_add_person"
+            
+            />
+ 
+    </LinearLayout>
+ 
+    <!-- Nick -->
+    <TextView
+        android:id="@+id/nick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:text="Rihanna Kapoor"
+        android:textColor="#ff0000ff"
+        android:typeface="sans"
+        android:textSize="15dip"
+        android:textStyle="bold"
+        android:layout_marginTop="3sp"
+        />
+ 	<Button
+ 	    android:id="@+id/Accept"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="25dp"
+ 	    android:layout_below="@+id/nick"
+ 	    android:layout_toRightOf="@+id/thumbnail"
+ 	    android:text="Accept" 
+ 	    android:background="@drawable/gradient_button"
+ 	    android:padding="3dp"
+ 	    android:textColor="#ff000000"
+ 	    android:textSize="12sp"
+ 	    android:layout_marginTop="5sp"
+ 	    android:clickable="true"
+ 	    
+ 	    />
+
+ 	<Button
+ 	    android:id="@+id/Decline"
+ 	    android:layout_width="wrap_content"
+ 	    android:layout_height="25dp"
+ 	    android:layout_marginLeft="8dp"
+ 	    android:layout_below="@+id/nick"
+ 	    android:layout_toRightOf="@+id/Accept"
+ 	    android:text="Decline"
+ 	    android:background="@drawable/gradient_button"
+ 	    android:textColor="#ff000000"
+ 	    android:textSize="12sp"
+ 	    android:layout_marginTop="5sp"
+ 	    android:clickable="true"
+ 	     />
+ 	    
+</RelativeLayout>
