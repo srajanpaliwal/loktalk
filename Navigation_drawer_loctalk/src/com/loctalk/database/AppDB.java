@@ -250,6 +250,8 @@ public class AppDB extends DBConnect {
 		
 	}
 	
+	
+	
 	public String getMyNick()
 	{	//JSONObject objPeer;
 		String myNick = null ;
@@ -333,6 +335,39 @@ public class AppDB extends DBConnect {
 	}
 	
 	
+	public void updVote(String toAdd, String content){
+		int prevVote;
+		if(content.length()!=0)
+		{
+			String sqlRemoveRegCard = String.format(ISql.GET_CONTENT_PREMIUM, content);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepremium cursor0"+cursor);
+				
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepremium cursor1"+cursor);
+				try {
+					
+					prevVote = cursor.getInt(cursor.getColumnIndex("Vote"));
+					if(toAdd.equals("1"))
+						prevVote = prevVote+1;
+					else
+						prevVote = prevVote-1;
+					updateAdd2(Integer.toString(prevVote), content);
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getcontentpremium err"+e);
+				}
+				}	
+			}
+		}
+		
+		
+	}
 	public int countChatReq()
 	{
 		Cursor cursor = execQuery(ISql.COUNT_CHATREQ);
@@ -453,6 +488,7 @@ public class AppDB extends DBConnect {
 						System.out.println(cursor.getString(cursor.getColumnIndex("Content")));
 						obj.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
 						obj.put("Vote", cursor.getString(cursor.getColumnIndex("Vote")));
+						obj.put("Liked", String.valueOf(cursor.getInt(cursor.getColumnIndex("Liked"))));
 						listPremium.add(obj);
 						
 					} catch (JSONException e) {
@@ -472,6 +508,75 @@ public class AppDB extends DBConnect {
 		return listPremium;
 	}
 
+	
+	
+	public String[] getOnePremium(int ID)
+	{	//JSONObject objPeer;
+		String peerRet[] =  new String[7];
+		if(ID>0)
+		{
+			String sqlRemoveRegCard = String.format(ISql.GET_ONE_PREMIUM, ID);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepremium cursor0"+cursor);
+				
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepremium cursor1"+cursor);
+				try {
+					peerRet[0] = String.valueOf(cursor.getInt(cursor.getColumnIndex("ID")));
+					peerRet[1] = cursor.getString(cursor.getColumnIndex("Nick"));
+					//cursor.getString(cursor.getColumnIndex("MAC"));
+					peerRet[2] = String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID")));
+					peerRet[3] = cursor.getString(cursor.getColumnIndex("Content"));
+					peerRet[4] = cursor.getString(cursor.getColumnIndex("Time"));
+					peerRet[5] = String.valueOf(cursor.getInt(cursor.getColumnIndex("Vote")));
+					peerRet[6] = String.valueOf(cursor.getInt(cursor.getColumnIndex("Liked")));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getonepremium err"+e);
+				}
+				}	
+			}
+		}
+		return peerRet;
+		
+	}
+	
+	
+	public int getContentPremium(String content)
+	{	//JSONObject objPeer;
+		int ret=0;
+		if(content.length()>0)
+		{
+			String sqlRemoveRegCard = String.format(ISql.GET_CONTENT_PREMIUM, content);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepremium cursor0"+cursor);
+				
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepremium cursor1"+cursor);
+				try {
+					
+					ret = cursor.getInt(cursor.getColumnIndex("Vote"));
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getonepremium err"+e);
+				}
+				}	
+			}
+		}
+		return ret;
+		
+	}
+	
+	
 public void insertPremium(JSONObject objPremium) {
 		String sqlCards;
 		System.out.println("Insertpremium AppDB called via db.insertpremium()");
@@ -481,7 +586,7 @@ public void insertPremium(JSONObject objPremium) {
 					Integer.parseInt(objPremium.getString("AppID")),
 					objPremium.getString("Content"),
 					objPremium.getString("Time"),
-					Integer.parseInt(objPremium.getString("Vote")));
+					Integer.parseInt(objPremium.getString("Vote")),Integer.parseInt(objPremium.getString("Liked"))); //liked or not
 					
 			System.out.println("Inserted into premium DB==="+objPremium.getString("AppID"));
 			

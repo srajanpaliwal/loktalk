@@ -67,6 +67,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	// nav drawer title
 	private CharSequence mDrawerTitle;
 	
+	public static String brAddress;
+	
 	// used to store app title
 	private CharSequence mTitle;
 	private String[] navMenuTitles;
@@ -84,6 +86,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		//super.onCreate(savedInstanceState);
+		brAddress = getBroadcastAddress();
 		receiverthread=new receiver(mHandler);
 		receiverthread.start();
 		setContentView(R.layout.activity_main);
@@ -157,7 +160,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			public void onDrawerClosed(View view) {
 				getSupportActionBar().setTitle(mTitle);
 				// calling onPrepareOptionsMenu() to show action bar icons
-				
+				navMenuTitles[0] = myNick;
+				adapter.notifyDataSetChanged();
 				supportInvalidateOptionsMenu();
 				
 			}
@@ -165,8 +169,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			public void onDrawerOpened(View drawerView) {
 				getSupportActionBar().setTitle(mDrawerTitle);
 				// calling onPrepareOptionsMenu() to hide action bar icons
-				
-				
+				navMenuTitles[0] = myNick;
+				adapter.notifyDataSetChanged();
 				supportInvalidateOptionsMenu();
 			}
 		};
@@ -340,6 +344,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 			{
 				fragment=fragmentList.get(8);
 				makeFrag(position,"perchat", fragment);
+				
 			}
 			break;
 		case 2:
@@ -525,7 +530,10 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 				}
 
 				else if(parsedStr[3].equals("adUpvote")){
-
+					// while sending upvote broadcast, message should be
+					// of the form likesuuucontent
+					String[] adUpVoteMsg = parsedStr[2].split("uuu");
+					db.updVote(adUpVoteMsg[0],adUpVoteMsg[1]);
 				}
 
 				else if(parsedStr[3].equals("adDlt")){
@@ -723,7 +731,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					 db.updatemyNick(loc);
 					 myNick = loc;
 					 System.out.println("updated nick===="+myNick);
-		
+					 
 				 }
 				 else{
 		 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);

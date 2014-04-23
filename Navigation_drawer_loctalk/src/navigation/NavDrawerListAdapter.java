@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 	
-	int n[] = {R.color.holoblue,R.color.green};
+	//int n[] = {R.color.holoblue,R.color.green};
 	
 	
 	private Context context;
@@ -50,17 +50,17 @@ public class NavDrawerListAdapter extends BaseAdapter {
 		if (convertView == null) {
             LayoutInflater mInflater = (LayoutInflater)
                     context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-            convertView = mInflater.inflate(R.layout.drawer_list_item, null);
+            convertView = mInflater.inflate(R.layout.drawer_list_item, null,false);
            
         }
          
-       ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
+      ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
        Random random = new Random();
-       imgIcon.setBackgroundResource(n[random.nextInt(n.length)]);
+       //imgIcon.setBackgroundResource(n[random.nextInt(n.length)]);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
         TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
          
-       imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
+        imgIcon.setImageResource(navDrawerItems.get(position).getIcon());        
         txtTitle.setText(navDrawerItems.get(position).getTitle());
         
         // displaying count
