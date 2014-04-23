@@ -333,6 +333,54 @@ public class AppDB extends DBConnect {
 	}
 	
 	
+	public void ultiUpdateNick(String newnick, String AppID){
+
+		int t;
+		updateNickChatreq(newnick, AppID);
+		updateNickMessages(newnick, AppID);
+		updateNickPeers(newnick, AppID);
+		updateNickPosts(newnick, AppID);
+		updateNickPremium(newnick, AppID);
+		//System.out.println("PC Updated with message: "+test+"<-----");
+		}
+
+	
+	public void updVote(String toAdd, String content){
+		int prevVote;
+		if(content.length()!=0)
+		{
+			String sqlRemoveRegCard = String.format(ISql.GET_CONTENT_PREMIUM, content);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepremium cursor0"+cursor);
+
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepremium cursor1"+cursor);
+				try {
+
+					prevVote = cursor.getInt(cursor.getColumnIndex("Vote"));
+					if(toAdd.equals("1"))
+						prevVote = prevVote+1;
+					else
+						prevVote = prevVote-1;
+					updateAdd2(Integer.toString(prevVote), content);
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getcontentpremium err"+e);
+				}
+				}	
+			}
+		}
+
+
+	}
+	
+	
+	
 	public int countChatReq()
 	{
 		Cursor cursor = execQuery(ISql.COUNT_CHATREQ);
@@ -428,29 +476,40 @@ public class AppDB extends DBConnect {
 	
 	public ArrayList<JSONObject> getPremium() {
 		Cursor cursor = execQuery(ISql.GET_PREMIUM);
-
+		/*
+		 * testing added
+		 */
 		ArrayList<JSONObject> listPremium = new ArrayList<JSONObject>();
 		JSONObject obj;
-		
+		System.out.println("Retrieving cursor"+cursor);
 		if (cursor != null && cursor.getCount() > 0) {
 
 			if (cursor.moveToNext()) {
 
 				do {
 					obj = new JSONObject();
-					
+					System.out.println("Using cursor");
+
 					try {
 						obj.put("ID", String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						System.out.println(String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						obj.put("Nick", cursor.getString(cursor.getColumnIndex("Nick")));
+						System.out.println(cursor.getString(cursor.getColumnIndex("Nick")));
 						obj.put("AppID", String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
+						System.out.println(String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
 						obj.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
+						System.out.println(cursor.getString(cursor.getColumnIndex("Content")));
 						obj.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
 						obj.put("Vote", cursor.getString(cursor.getColumnIndex("Vote")));
+						obj.put("Liked", String.valueOf(cursor.getInt(cursor.getColumnIndex("Liked"))));
 						listPremium.add(obj);
+
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.out.println("Err in getpremium=="+e);
 					}
-					
+
 				} while (cursor.moveToNext());
 			}
 		}
@@ -461,19 +520,116 @@ public class AppDB extends DBConnect {
 
 		return listPremium;
 	}
+	
+	public String[] getOnePremium(int ID)
+	{	//JSONObject objPeer;
+		String peerRet[] =  new String[7];
+		if(ID>0)
+		{
+			String sqlRemoveRegCard = String.format(ISql.GET_ONE_PREMIUM, ID);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepremium cursor0"+cursor);
 
-public void insertPremium(JSONObject objPremium) {
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepremium cursor1"+cursor);
+				try {
+					peerRet[0] = String.valueOf(cursor.getInt(cursor.getColumnIndex("ID")));
+					peerRet[1] = cursor.getString(cursor.getColumnIndex("Nick"));
+					//cursor.getString(cursor.getColumnIndex("MAC"));
+					peerRet[2] = String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID")));
+					peerRet[3] = cursor.getString(cursor.getColumnIndex("Content"));
+					peerRet[4] = cursor.getString(cursor.getColumnIndex("Time"));
+					peerRet[5] = String.valueOf(cursor.getInt(cursor.getColumnIndex("Vote")));
+					peerRet[6] = String.valueOf(cursor.getInt(cursor.getColumnIndex("Liked")));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getonepremium err"+e);
+				}
+				}	
+			}
+		}
+		return peerRet;
+
+	}
+	
+	public int getContentPremium(String content)
+	{	//JSONObject objPeer;
+		int ret=0;
+		if(content.length()>0)
+		{
+			String sqlRemoveRegCard = String.format(ISql.GET_CONTENT_PREMIUM, content);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepremium cursor0"+cursor);
+
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepremium cursor1"+cursor);
+				try {
+
+					ret = cursor.getInt(cursor.getColumnIndex("Vote"));
+
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getonepremium err"+e);
+				}
+				}	
+			}
+		}
+		return ret;
+
+	}
+	
+	public void upVote(String adID,String senderID){
+		//adding to table Premium the vote count
+		String sqlCards;
+		System.out.println("Increment ad in AppDB called via db.incrementVote()");
+		try {
+			sqlCards = String.format(ISql.GET_P_COUNT, Integer.parseInt(adID), 
+					Integer.parseInt(senderID));
+			Cursor cursor = execQuery(sqlCards);
+
+			int vote ;
+			if (cursor != null && cursor.getCount() > 0) {
+
+				if (cursor.moveToNext()) {
+					vote = cursor.getInt(cursor.getColumnIndex("Vote"));
+					int n = updateAdd(Integer.toString(vote), adID, senderID);
+
+					System.out.println("Upvoted ad in premium DB==="+senderID);
+				}
+			}
+
+
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+
+
+
+
+	}
+
+	public void insertPremium(JSONObject objPremium) {
 		String sqlCards;
 		System.out.println("Insertpremium AppDB called via db.insertpremium()");
 		try {
-			sqlCards = String.format(ISql.INSERT_PREMIUM, Integer.parseInt(objPremium.getString("ID")), 
+			sqlCards = String.format(ISql.INSERT_PREMIUM, Integer.parseInt(objPremium.getString("ID")),
+					objPremium.getString("Nick"),
 					Integer.parseInt(objPremium.getString("AppID")),
 					objPremium.getString("Content"),
 					objPremium.getString("Time"),
-					Integer.parseInt(objPremium.getString("Vote")));
-					
+					Integer.parseInt(objPremium.getString("Vote")),0); //liked or not
+
 			System.out.println("Inserted into premium DB==="+objPremium.getString("AppID"));
-			
+
 			execNonQuery(sqlCards);			
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block
@@ -482,41 +638,11 @@ public void insertPremium(JSONObject objPremium) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-		
+
+
+
 	}
 
-public void upVote(String adID,String senderID){
-		//adding to table Premium the vote count
-		String sqlCards;
-		System.out.println("Increment ad in AppDB called via db.incrementVote()");
-		try {
-			sqlCards = String.format(ISql.GET_P_COUNT, Integer.parseInt(adID), 
-					Integer.parseInt(senderID));
-			Cursor cursor = execQuery(sqlCards);
-			
-			int vote ;
-			if (cursor != null && cursor.getCount() > 0) {
-
-				if (cursor.moveToNext()) {
-					vote = cursor.getInt(cursor.getColumnIndex("Vote"));
-					int n = updateAdd(Integer.toString(vote), adID, senderID);
-					
-					System.out.println("Upvoted ad in premium DB==="+senderID);
-				}
-			}
-			
-								
-		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
-		
-		
-		
-		
-	}
 	
 public void removePremium(String adID){
 		

@@ -204,14 +204,76 @@ public class DBConnect extends SQLiteOpenHelper {
 		return cursor;
 	}
 
-	public synchronized int updateAdd(String values, String id, String appID){
+	
+	public synchronized int updateNickChatreq(String values, String appID){
 		ContentValues cv = new ContentValues();
-		cv.put("Vote", values);
-		String where = "ID=? AND AppID=?";
-		String whereArgs[] = new String[]{id,appID};
-		int n = db.update("Premium", cv, where, whereArgs);
+		cv.put("Nick", values);
+		String where = "AppID="+appID;
+		int n = db.update("ChatReq", cv, where, null);
+		System.out.println("----> Updated ChatReq with new nick: "+n);
 		return n;
 		}
+
+
+		public synchronized int updateNickPeers(String values, String appID){
+		ContentValues cv = new ContentValues();
+		cv.put("Nick", values);
+		String where = "AppID="+appID;
+		int n = db.update("Peers", cv, where, null);
+		System.out.println("----> Updated Peers with new nick: "+n);
+		return n;
+		}
+
+		public synchronized int updateNickMessages(String values, String appID){
+		ContentValues cv = new ContentValues();
+		cv.put("Nick", values);
+		String where = "AppID="+appID;
+		int n = db.update("Messages", cv, where, null);
+		System.out.println("----> Updated Messages with new nick: "+n);
+		return n;
+		}
+			
+		public synchronized int updateNickPosts(String values, String appID){
+		ContentValues cv = new ContentValues();
+		cv.put("Nick", values);
+		String where = "AppID="+appID;
+		int n = db.update("Posts", cv, where, null);
+		System.out.println("----> Updated Peers with new nick: "+n);
+		return n;
+		}
+
+		public synchronized int updateNickPremium(String values, String appID){
+		ContentValues cv = new ContentValues();
+		cv.put("Nick", values);
+		String where = "AppID="+appID;
+		int n = db.update("Premium", cv, where, null);
+		System.out.println("----> Updated Premium with new nick: "+n);
+		return n;
+		}
+
+		
+		public synchronized int updateAdd(String values, String adContent, String Liked){
+			ContentValues cv = new ContentValues();
+			cv.put("Vote", values);
+			cv.put("Liked", Integer.parseInt(Liked));
+			String where = "Content=?";
+			String whereArgs[] = new String[]{adContent};
+			int n = db.update("Premium", cv, where, whereArgs);
+			System.out.println("updating ad===="+adContent+"==Yo=="+n);
+			return n;
+			}
+
+		public synchronized int updateAdd2(String values, String adContent){
+			ContentValues cv = new ContentValues();
+			cv.put("Vote", values);
+			//cv.put("Liked", Integer.parseInt(Liked));
+			String where = "Content=?";
+			String whereArgs[] = new String[]{adContent};
+			int n = db.update("Premium", cv, where, whereArgs);
+			System.out.println("updating ad===="+adContent+"==Yo=="+n);
+			return n;
+			}
+	
 	
 	public synchronized int updatePC(int values, String appID){
 		ContentValues cv = new ContentValues();

@@ -67,6 +67,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private String[] navMenuTitles;
 	private TypedArray navMenuIcons;
 	public static boolean active=false;
+	
+	public static String brAddress;
 
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private ArrayList<String> adRepliers = new ArrayList<String>();
@@ -81,6 +83,7 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		brAddress = getBroadcastAddress();
 		active=true;
 		initHandler();
 		//recser = new receiverser();
@@ -522,6 +525,12 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 
 				}
 
+				else if (parsedStr[3].equals("nickChange")){
+					// update all the tables!!
+					db.ultiUpdateNick(parsedStr[1], parsedStr[0]);
+				}
+
+				
 				else if(parsedStr[3].equals("adDlt")){
 
 				}
@@ -720,6 +729,10 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					 db.updatemyNick(loc);
 					 myNick = loc;
 					 System.out.println("updated nick===="+myNick);
+
+					 String changenickstr = jsonFunctions1.createUltiJSON(myAppID, myNick, "mynick changed", "nickChange");
+					 senMain = new sender(changenickstr, getBroadcastAddress());
+					 senMain.start();
 		
 				 }
 				 else{
