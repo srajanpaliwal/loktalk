@@ -111,7 +111,7 @@ public class groupFragment extends ListFragment implements dataTransferInterface
 			String ID=(db.countPost()+1)+"";
 			Calendar c = Calendar.getInstance(); 
 			String time=c.getTime().toString();
-			dbFunctions.addtopostdb(ID, myAppID, newMessage, time, "postGen");
+			dbFunctions.addtopostdb(ID, myAppID, newMessage, time, "postGen",myNick);
 			//new SendMessage().execute();
 		}
 		try{
