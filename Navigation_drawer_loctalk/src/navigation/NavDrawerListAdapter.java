@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class NavDrawerListAdapter extends BaseAdapter {
 	
-	//int n[] = {R.color.holoblue,R.color.green};
+	int n[] = {android.R.color.transparent};
 	
 	
 	private Context context;
@@ -56,7 +56,7 @@ public class NavDrawerListAdapter extends BaseAdapter {
          
       ImageView imgIcon = (ImageView) convertView.findViewById(R.id.icon);
        Random random = new Random();
-       //imgIcon.setBackgroundResource(n[random.nextInt(n.length)]);
+       imgIcon.setBackgroundResource(n[random.nextInt(n.length)]);
         TextView txtTitle = (TextView) convertView.findViewById(R.id.title);
         TextView txtCount = (TextView) convertView.findViewById(R.id.counter);
          
