@@ -10,7 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
+//Adapter for settings tab
 public class SettingsAdapter extends BaseAdapter {
 	
 	private Context lcontext;

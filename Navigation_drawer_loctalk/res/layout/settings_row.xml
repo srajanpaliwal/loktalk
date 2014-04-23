@@ -15,7 +15,6 @@
          android:text="sdfjh"
          android:textColor="#ff0000ff"
          android:textSize="25dip"
-         android:textStyle="bold"
-         android:typeface="sans" />
+          />
      
      </LinearLayout>

@@ -15,7 +15,7 @@ import static com.loctalk.Constant.dbFunctions;
 import static com.loctalk.Constant.jsonFunctions1;
 import static com.loctalk.Constant.myAppID;
 import static com.loctalk.Constant.myNick;
-
+//Fragment for settings tab
 public class SettingsFragment  extends ListFragment {
 
 	
@@ -39,7 +39,7 @@ public class SettingsFragment  extends ListFragment {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+	
 		super.onActivityCreated(savedInstanceState);
 		llist = new ArrayList<row>();
 		llist.add(new row("About"));

@@ -16,8 +16,8 @@
         android:textColor="#ff0000ff"
         android:textSize="25dip"
         android:textStyle="bold"
-        android:typeface="sans" />
-
+        />
+    
     <ImageView
         android:id="@+id/about_img"
         android:layout_width="wrap_content"
@@ -37,7 +37,6 @@
         android:text="\@Copyright ABC.Ltd"
         android:textColor="#ff0000ff"
         android:textSize="15dip"
-        android:textStyle="bold"
-        android:typeface="sans" />
+        />
 
 </RelativeLayout>

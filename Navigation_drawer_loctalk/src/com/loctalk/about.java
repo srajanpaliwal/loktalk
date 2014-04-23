@@ -2,7 +2,7 @@ package com.loctalk;
 
 import android.app.Activity;
 import android.os.Bundle;
-
+//Creating about page
 public class about extends Activity{
 
 	

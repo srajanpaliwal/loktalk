@@ -346,6 +346,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 				makeFrag(position,"perchat", fragment);
 			}
 			break;
+			//settings fragment case added
 		case 11:
 			if(fragmentList.get(11)==null){
 				fragment=new SettingsFragment();
