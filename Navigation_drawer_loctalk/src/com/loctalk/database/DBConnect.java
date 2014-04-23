@@ -213,6 +213,15 @@ public class DBConnect extends SQLiteOpenHelper {
 		return n;
 		}
 	
+	public synchronized int updatepeertable(String Nick,String IP, String appID){
+		ContentValues cv = new ContentValues();
+		cv.put("Nick", Nick);
+		cv.put("IP", IP);
+		String where = "AppID="+appID;
+		int n = db.update("Peers", cv, where, null);
+		System.out.println("---->PC Updated with message: "+n);
+		return n;
+		}
 	public synchronized int updatePC(int values, String appID){
 		ContentValues cv = new ContentValues();
 		cv.put("PC", values);
@@ -221,7 +230,6 @@ public class DBConnect extends SQLiteOpenHelper {
 		System.out.println("---->PC Updated with message: "+n);
 		return n;
 		}
-	
 	public synchronized int updatemyNick(String newnick){
 		ContentValues cv = new ContentValues();
 		cv.put("nick", newnick);

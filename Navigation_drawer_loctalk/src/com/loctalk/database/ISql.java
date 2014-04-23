@@ -2,8 +2,10 @@ package com.loctalk.database;
 
 public interface ISql {
 	
-	String INSERT_MSG = "INSERT OR REPLACE INTO Messages(ID, AppID, Content, Time) values (%d, %d, '%s', '%s')";
-	String GET_MSG = "SELECT ID,AppID,Content,Time FROM Messages";
+	String INSERT_MSG = "INSERT OR REPLACE INTO Messages(ID, AppID, Content, Time ,Flag) values (%d, %d, '%s', '%s' , '%d')";
+	String GET_MSG = "SELECT ID,AppID,Content,Time,Flag FROM Messages WHERE AppID= %d";
+	String GET_MSG_LAST = "SELECT ID,AppID,Content,Time,Flag FROM Messages WHERE AppID= %d ORDER BY ID DESC LIMIT 1";
+	String GET_AppID_MSG = "SELECT DISTINCT AppID FROM Messages";
 	String INSERT_Post = "INSERT OR REPLACE INTO Posts(ID, AppID, Content, Time,Category) values (%d, %d, '%s', '%s','%s')";
 	String GET_Post = "SELECT ID,AppID,Content,Time,Category FROM Posts where Category='%s'";
 	String COUNT_Post = "SELECT count(ID) from Posts";
@@ -14,6 +16,7 @@ public interface ISql {
 	
 	String INSERT_PEER = "INSERT OR REPLACE INTO Peers(AppID, Nick, MAC, IP, PC, Block) values (%d, '%s', '%s', '%s', %d, %d)";
 	String GET_PEER = "SELECT AppID,Nick,MAC,IP,PC,Block FROM Peers";
+	String GET_PEER_PC = "SELECT AppID,Nick,MAC,IP,PC,Block FROM Peers WHERE PC =%d";
 	String REMOVE_PEER = "DELETE FROM Peers WHERE AppID = %d";
 	String COUNT_PEER = "SELECT count(AppID) from Peers";
 	String GET_ONEPEER = "SELECT AppID,Nick,IP,PC,Block FROM Peers WHERE AppID = %d";

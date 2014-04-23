@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 	sender sen;
 	ArrayList<peerData> peerName;
 	ArrayList<String> id = new ArrayList<String>();
+	Handler  mHandler;
 	 public PeersFragment() {
 		// TODO Auto-generated constructor stub
 	}
@@ -141,6 +143,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 		}
 		else if(peerInfo[3].equals("2")){
 			// Start PM Activity.
+			mHandler.obtainMessage(2,""+peerInfo[0]).sendToTarget();
 		}
 
 	}
@@ -183,7 +186,9 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 		//addtopeerlistview(peerName);
 	}
 
-		
+	public void setHandler(Handler hand){
+		mHandler=hand;
+	}	
 }
 
 	

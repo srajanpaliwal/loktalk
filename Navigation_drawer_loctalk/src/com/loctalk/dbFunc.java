@@ -168,6 +168,28 @@ public void addtopostdb(String ID, String AppID, String Content, String Time,Str
 			System.out.println("DB error"+ e.getMessage().toString());
 		}
 	}
+public void addtoMSGdb(String ID, String AppID, String Content, String Time,String Flag){
+	
+	/*
+	 * Method to add post to the table-"Post".
+	 */
+	
+	JSONObject obj = new JSONObject();
+	
+	try {
+		obj.put("ID", ID);
+		obj.put("AppID", AppID);
+		obj.put("Content", Content);
+		obj.put("Time", Time);
+		obj.put("Flag", Flag);
+		System.out.println("Jason string for post DB==>>"+"\n"+obj.toString());
+		db.insertMSG(obj);
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		System.out.println("DB error"+ e.getMessage().toString());
+	}
+}
 public ArrayList<Message1> getpostdb(String Category){
 	
 	/*
@@ -210,6 +232,52 @@ public ArrayList<Message1> getpostdb(String Category){
 	}
 	
 	return Posttoreturn;
+}
+
+public ArrayList<Message1> getMSGdb(String AppI){
+	
+	/*
+	 * Method to get post to the table-"Post".
+	 */
+	ArrayList<JSONObject> MSG=new ArrayList<JSONObject>();
+	ArrayList<Message1> MSGtoreturn=new ArrayList<Message1>();
+	Message1 pmessage=null;
+	String Flag;
+	String AppID;
+	int Arraylength;
+	int j;
+	int i;
+	try {
+		MSG=db.getMSG(AppI);
+		Arraylength=MSG.size();
+		for(i=0;i<=Arraylength-1;i++)
+		{
+			Flag=MSG.get(i).get("Flag").toString();
+			AppID=MSG.get(i).get("Flag").toString();
+			System.out.println("===========>"+MSG.get(i).get("Content")+MSG.get(i).get("Time"));
+			if(Flag.equals("1"))
+			{
+					pmessage=new Message1(myNick+MSG.get(i).get("Content")+MSG.get(i).get("Time"),true);//add time here
+				
+			}
+			else if(Flag.equals("0"))
+			{
+					pmessage=new Message1(db.getOnePeer(Integer.parseInt(AppID))[1]+MSG.get(i).get("Content")+MSG.get(i).get("Time"),false);//add time here
+			}
+			MSGtoreturn.add(MSGtoreturn.size(),pmessage);
+			for(j=0;j<=MSGtoreturn.size()-1;j++)
+			{
+				System.out.println(";;;;;;;;;;;;;>"+MSGtoreturn.get(i).getMessage());
+			}
+		}
+		
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		System.out.println("DB error"+ e.getMessage().toString());
+	}
+	
+	return MSGtoreturn;
 }
 	public void addtomsgdb(String ID, String AppID, String Content, String Time){
 		

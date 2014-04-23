@@ -7,10 +7,8 @@ import static com.loctalk.Constant.jsonFunctions1;
 import static com.loctalk.Constant.myAppID;
 import static com.loctalk.Constant.myNick;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.loctalk.database.AppDB;
@@ -19,7 +17,6 @@ import navigation.NavDrawerItem;
 import navigation.NavDrawerListAdapter;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.net.DhcpInfo;
@@ -29,16 +26,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
-import android.text.InputType;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,20 +49,15 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerList;
 	private ActionBarDrawerToggle mDrawerToggle;
-	//Fragment fragment = null;
-
 	// nav drawer title
 	private CharSequence mDrawerTitle;
-
 	// used to store app title
 	private CharSequence mTitle;
 	private String[] navMenuTitles;
 	private TypedArray navMenuIcons;
-
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private ArrayList<String> adRepliers = new ArrayList<String>();
-	private NavDrawerListAdapter adapter;
-
+	private NavDrawerListAdapter navadapter;
 	receiver receiverthread;
 	sender senMain;
 	
@@ -81,6 +68,11 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		//super.onCreate(savedInstanceState);
 		receiverthread=new receiver(mHandler);
 		receiverthread.start();
+		//Initialization of fragment list
+		int i;
+		for(i=0;i<12;i++){
+			fragmentList.add(i,null);
+		}
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
 		//Initialization of database constants
@@ -133,9 +125,9 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the nav drawer list adapter
-		adapter = new NavDrawerListAdapter(getApplicationContext(),
+		navadapter = new NavDrawerListAdapter(getApplicationContext(),
 				navDrawerItems);
-		mDrawerList.setAdapter(adapter);
+		mDrawerList.setAdapter(navadapter);
 
 		// enabling action bar app icon and behaving it as toggle button
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -291,14 +283,8 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	Bundle bundl;
 	static Fragment fragment = null;
 	private void displayView(int position) {
-		int i;
-		for(i=0;i<12;i++){
-			fragmentList.add(i,null);
-		}
 		// update the main content by replacing fragments
 		ListFragment fragment = null;
-		
-		//ListFragment listfragment = null;
 		switch (position) {
 		case 0:
 			showdialog();
@@ -371,20 +357,46 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 			}
 			else
 			{
-				fragment=fragmentList.get(5);
+				fragment=fragmentList.get(6);
 				makeFrag(position,"postFood", fragment);
 			}
 			break;
 		case 7:
 			if(fragmentList.get(7)==null){
 				fragment=new PeersFragment();
+				((PeersFragment) fragment).setHandler(mHandler);
 				fragmentList.set(7, fragment);
 				makeFrag(position,"Peers", fragment);
 			}
 			else
 			{
-				fragment=fragmentList.get(5);
+				fragment=fragmentList.get(7);
 				makeFrag(position,"Peers", fragment);
+			}
+			break;
+		case 8:
+			if(fragmentList.get(8)==null){
+				fragment=new personalchat();
+				((personalchat) fragment).setHandler(mHandler);
+				fragmentList.set(8, fragment);
+				makeFrag(position,"personalChat", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(8);
+				makeFrag(position,"personalchat", fragment);
+			}
+			break;
+		case 9:
+			if(fragmentList.get(9)==null){
+				fragment=new chatreqFragment();
+				fragmentList.set(9, fragment);
+				makeFrag(position,"chatreq", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(9);
+				makeFrag(position,"chatreq", fragment);
 			}
 			break;
 		default:
@@ -422,7 +434,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		// Pass any configuration change to the drawer toggls
+		// Pass any configuration change to the drawer toggles
 		mDrawerToggle.onConfigurationChanged(newConfig);
 	}
 
@@ -438,156 +450,192 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 	    	 * recAr[0] contains message
 	    	 * recAr[1] contains IP of the message from where it was sent.
 	    	 */
-	    	try{
-	    	String recStr = msg.obj.toString();
-	    	String[] recAr = recStr.split("splitstr");
-	    	System.out.println("message=="+ recAr[0]+"=== IP :"+recAr[1]);
-	    	
-	    		/*
-	    		 * Parsing the received message and carrying out the required tasks.
-	    		 */
-
-				String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
-				if((parsedStr[0].equals(myAppID))){
-				if(parsedStr[3].equals("adReq")){
-					String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
-					senMain = new sender(adRep,recAr[1]);
-					senMain.start();
-				}
-
-				else if(parsedStr[3].equals("adReply")){
-					if(adRepliers.size()==0){
-						String adseeker = jsonFunctions1.createUltiJSON(myAppID, myNick, "send ads", "adSeek");
-						senMain = new sender(adseeker, recAr[1]);
+	    	if(msg.what==1)
+	    	{
+		    	try{
+		    	String recStr = msg.obj.toString();
+		    	String[] recAr = recStr.split("splitstr");
+		    	System.out.println("message=="+ recAr[0]+"=== IP :"+recAr[1]);
+		    	
+		    		/*
+		    		 * Parsing the received message and carrying out the required tasks.
+		    		 */
+	
+					String[] parsedStr = jsonFunctions1.parseUltiJSON(recAr[0]);
+					if(!(parsedStr[0].equals(myAppID))){
+					if(parsedStr[3].equals("adReq")){
+						String adRep = jsonFunctions1.createUltiJSON(myAppID, myNick, "reply for adReq", "adReply");
+						senMain = new sender(adRep,recAr[1]);
 						senMain.start();
 					}
-					
-					adRepliers.add(recAr[1]);
-				}
-
-				else if(parsedStr[3].equals("adSeek")){
-					String ads = jsonFunctions1.createUltiJSON(myAppID, myNick, dbFunctions.getAd(),"adSent");
-					senMain = new sender(ads, recAr[1]);
-					senMain.start();
-
-				}
-
-				else if(parsedStr[3].equals("adSent")){
-					dbFunctions.addtoaddb(parsedStr[2]);
-
-				}
-
-				else if(parsedStr[3].equals("adUpvote")){
-
-				}
-
-				else if(parsedStr[3].equals("adDlt")){
-
-				}
-
-				else if(parsedStr[3].equals("postAd")){
-					String ID=(db.countPremium()+1)+"";
-					Calendar c = Calendar.getInstance(); 
-					String time=c.getTime().toString();
-					dbFunctions.addonetoaddb(ID, parsedStr[0],parsedStr[2], time, parsedStr[3]);
-					Fragment frag=getSupportFragmentManager().findFragmentByTag("postAd");
-					if(frag.isVisible())
-					datatofragment.passdatatofragment("message",parsedStr[2]);
-
-				}
-
-				else if(parsedStr[3].equals("postGen")){
-					String ID=(db.countPost()+1)+"";
-					Calendar c = Calendar.getInstance(); 
-					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0],msg.toString(), time, parsedStr[3]);
-					Fragment frag=getSupportFragmentManager().findFragmentByTag("postGen");
-					if(frag.isVisible())
-					datatofragment.passdatatofragment("message",msg.toString());
-				}
-
-				else if(parsedStr[3].equals("postEvent")){
-					String ID=(db.countPost()+1)+"";
-					Calendar c = Calendar.getInstance(); 
-					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
-					Fragment frag=getSupportFragmentManager().findFragmentByTag("postEvent");
-					if(frag.isVisible())
-					datatofragment.passdatatofragment("message",msg.toString());
-
-				}
-
-				else if(parsedStr[3].equals("postHelp")){
-					String ID=(db.countPost()+1)+"";
-					Calendar c = Calendar.getInstance(); 
-					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
-					Fragment frag=getSupportFragmentManager().findFragmentByTag("postHelp");
-					if(frag.isVisible())
-					datatofragment.passdatatofragment("message",msg.toString());
-				}
-
-				else if(parsedStr[3].equals("postBusi")){
-					String ID=(db.countPost()+1)+"";
-					Calendar c = Calendar.getInstance(); 
-					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
-					Fragment frag=getSupportFragmentManager().findFragmentByTag("postBusi");
-					if(frag.isVisible())
-					datatofragment.passdatatofragment("message",msg.toString());
-				}
-
-				else if(parsedStr[3].equals("postFood")){
-					String ID=(db.countPost()+1)+"";
-					Calendar c = Calendar.getInstance(); 
-					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
-					Fragment frag=getSupportFragmentManager().findFragmentByTag("postFood");
-					if(frag.isVisible())
-					datatofragment.passdatatofragment("message",msg.toString());
-				}
-
-				else if(parsedStr[3].equals("chatMsg")){
-				//	datatofragment.passdatatofragment("message",msg.toString());
-				}
-
-				else if(parsedStr[3].equals("chatReq")){
-					
-				}
-
-				else if(parsedStr[3].equals("chatReply")){
-					
-				}
-
-				else if(parsedStr[3].equals("peerReq")){
-					String toSend = jsonFunctions1.createUltiJSON(myAppID, myNick, "Hi peer", "peerReply");
-					senMain = new sender(toSend,recAr[1]);
-					senMain.start();
-
-				}
-
-				else if(parsedStr[3].equals("peerReply")){
-					int id = Integer.parseInt(parsedStr[0]);
-					try{
-					String[] pcdata = db.getOnePeer(id);
-					if(pcdata[0].equals(Integer.toString(id)))
-						datatopeerfragment.passdatatopeerfragment(1, parsedStr,recAr[1]);
-					else
-						datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
-					}catch(Exception e){
-						System.out.println("Get One peer array"+e);
-						datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
+	
+					else if(parsedStr[3].equals("adReply")){
+						if(adRepliers.size()==0){
+							String adseeker = jsonFunctions1.createUltiJSON(myAppID, myNick, "send ads", "adSeek");
+							senMain = new sender(adseeker, recAr[1]);
+							senMain.start();
+						}
+						
+						adRepliers.add(recAr[1]);
 					}
-					//System.out.println("#######> Got the PC as: "+Integer.parseInt(pcdata[3]));
-					
-				}
-				}
+	
+					else if(parsedStr[3].equals("adSeek")){
+						String ads = jsonFunctions1.createUltiJSON(myAppID, myNick, dbFunctions.getAd(),"adSent");
+						senMain = new sender(ads, recAr[1]);
+						senMain.start();
+	
+					}
+	
+					else if(parsedStr[3].equals("adSent")){
+						dbFunctions.addtoaddb(parsedStr[2]);
+	
+					}
+	
+					else if(parsedStr[3].equals("adUpvote")){
+	
+					}
+	
+					else if(parsedStr[3].equals("adDlt")){
+	
+					}
+	
+					else if(parsedStr[3].equals("postAd")){
+						String ID=(db.countPremium()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addonetoaddb(ID, parsedStr[0],parsedStr[2], time, parsedStr[3]);
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("postAd");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",parsedStr[2]);
+	
+					}
+	
+					else if(parsedStr[3].equals("postGen")){
+						String ID=(db.countPost()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addtopostdb(ID, parsedStr[0],msg.toString(), time, parsedStr[3]);
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("postGen");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",msg.toString());
+					}
+	
+					else if(parsedStr[3].equals("postEvent")){
+						String ID=(db.countPost()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("postEvent");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",msg.toString());
+	
+					}
+	
+					else if(parsedStr[3].equals("postHelp")){
+						String ID=(db.countPost()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("postHelp");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",msg.toString());
+					}
+	
+					else if(parsedStr[3].equals("postBusi")){
+						String ID=(db.countPost()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("postBusi");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",msg.toString());
+					}
+	
+					else if(parsedStr[3].equals("postFood")){
+						String ID=(db.countPost()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("postFood");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",msg.toString());
+					}
+	
+					else if(parsedStr[3].equals("chatMsg")){
+						String ID=(db.countPost()+1)+"";
+						Calendar c = Calendar.getInstance(); 
+						String time=c.getTime().toString();
+						dbFunctions.addtoMSGdb(ID, parsedStr[0], msg.toString(), time, "0");
+						Fragment frag=getSupportFragmentManager().findFragmentByTag("chatMsg");
+						if(frag.isVisible())
+						datatofragment.passdatatofragment("message",msg.toString());
+					}
+	
+					else if(parsedStr[3].equals("chatReq")){
+						int id = Integer.parseInt(parsedStr[0]);
+						String[] pcdata = db.getOnePeer(id);
+						Fragment fragm=getSupportFragmentManager().findFragmentByTag("chatreq");
+						if(pcdata==null)
+						{
+							
+							dbFunctions.addtopeerdb(parsedStr[0],parsedStr[1], recAr[1], "4", "0");//4---pending chat request
+							
+							if(fragm.isVisible())
+								datatofragment.passdatatofragment("requestadd",msg.toString());
+						}
+						else if(pcdata[3].equals(1))
+							{
+								db.updPC(2,parsedStr[0]);
+								if(fragm.isVisible())
+								datatofragment.passdatatofragment("removepeer",parsedStr[0]);
+							}
+						
+					}
+	
+					else if(parsedStr[3].equals("chatReply")){
+						int id = Integer.parseInt(parsedStr[0]);
+						String[] pcdata = db.getOnePeer(id);
+						System.out.println("asdasdasdasdasd"+pcdata[1]+pcdata[2]);
+						Fragment fragm=getSupportFragmentManager().findFragmentByTag("chatReply");
+						db.updPC(2,parsedStr[0]);
+							
+					}
+	
+					else if(parsedStr[3].equals("peerReq")){
+						String toSend = jsonFunctions1.createUltiJSON(myAppID, myNick, "Hi peer", "peerReply");
+						senMain = new sender(toSend,recAr[1]);
+						senMain.start();
+	
+					}
+	
+					else if(parsedStr[3].equals("peerReply")){
+						int id = Integer.parseInt(parsedStr[0]);
+						try{
+						String[] pcdata = db.getOnePeer(id);
+						if(pcdata[0].equals(Integer.toString(id)))
+							datatopeerfragment.passdatatopeerfragment(1, parsedStr,recAr[1]);
+						else
+							datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
+						}catch(Exception e){
+							System.out.println("Get One peer array"+e);
+							datatopeerfragment.passdatatopeerfragment(0, parsedStr,recAr[1]);
+						}
+						//System.out.println("#######> Got the PC as: "+Integer.parseInt(pcdata[3]));
+						
+					}
+					}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 				System.out.println("handle message"+e);
 			}
-
+	    }
+	    	else if(msg.what==2){
+	    		System.out.println("mainactivity");
+	    		String[] pcdata = db.getOnePeer(Integer.parseInt(msg.obj.toString()));
+	    		ListFragment frag=new personalFragment();
+				makeFrag("chatMsg",frag,pcdata[2],pcdata[0]);
+	    	}	
 	    }
 	};
 
@@ -700,6 +748,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 			fragment.setArguments(bundl);
 			ft =getSupportFragmentManager().beginTransaction();
 			ft.replace(R.id.frame_container,fragment,flag);
+			ft.addToBackStack(null);
 			ft.commit();
 			}catch(Exception e){
 				System.out.println("yaha aaya error!!!!!"+e);
@@ -708,6 +757,22 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 			mDrawerList.setSelection(position);
 			setTitle(navMenuTitles[position]);
 			mDrawerLayout.closeDrawer(mDrawerList);
+	}
+	public void makeFrag(String flag , ListFragment fragment,String ip,String AppID) {
+		try{
+			System.out.println("fragmentis getting created");
+			bundl = new Bundle();
+			bundl.putString("flag", flag);
+			bundl.putString("AppID", AppID);
+			bundl.putString("broadip",ip);
+			fragment.setArguments(bundl);
+			ft =getSupportFragmentManager().beginTransaction();
+			ft.replace(R.id.frame_container,fragment,flag);
+			ft.addToBackStack(null);
+			ft.commit();
+			}catch(Exception e){
+				System.out.println("yaha aaya error!!!!!"+e);
+			}	
 	}
 	}
 	

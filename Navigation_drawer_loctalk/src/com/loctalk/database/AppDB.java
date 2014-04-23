@@ -73,6 +73,28 @@ public class AppDB extends DBConnect {
 		
 		
 	}
+	public void insertMSG(JSONObject objStudent) {
+		String sqlCards;
+		
+		try {
+			sqlCards = String.format(ISql.INSERT_MSG, Integer.parseInt(objStudent.getString("ID")), 
+					Integer.parseInt(objStudent.getString("AppID")), 
+					objStudent.getString("Content"),
+					objStudent.getString("Time"),
+					Integer.parseInt(objStudent.getString("Flag")));
+					
+			
+			execNonQuery(sqlCards);			
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
 	
 	/**
 	 * To get all Post from a Category
@@ -132,7 +154,6 @@ public class AppDB extends DBConnect {
 			
 		return cntCards;
 	}
-	
 	
 	public int countPremium()
 	{
@@ -243,13 +264,116 @@ public class AppDB extends DBConnect {
 					e.printStackTrace();
 					System.out.println("getonepeer err"+e);
 				}
-				}	
+				}
+				else{
+					peerRet =  null;
+				}
 			}
 		}
 		return peerRet;
 		
 	}
-	
+	public ArrayList<String> getPersonalpeer()
+	{	//JSONObject objPeer;
+		ArrayList<String> peerRet=new ArrayList<String>();
+			String sqlRemoveRegCard = String.format(ISql.GET_AppID_MSG);
+			Cursor cursor = execQuery(sqlRemoveRegCard);
+			if(cursor!=null){
+				//objPeer = new JSONObject();
+				System.out.println("getonepeer cursor0"+cursor);
+				
+				if (cursor.moveToNext())
+				{
+					System.out.println("getonepeer cursor1"+cursor);
+				try {
+					peerRet.add(String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					System.out.println("getonepeer err"+e);
+				}
+				}
+				else{
+					peerRet =  null;
+				}
+			}
+		return peerRet;
+		
+	}
+	public ArrayList<JSONObject> getMSG(String AppID) {
+		String sqlCards;
+		sqlCards = String.format(ISql.GET_MSG,Integer.parseInt(AppID));
+		Cursor cursor = execQuery(sqlCards);
+
+		ArrayList<JSONObject> listMSG = new ArrayList<JSONObject>();
+		JSONObject objStudent;
+		
+		if (cursor != null && cursor.getCount() > 0) {
+
+			if (cursor.moveToNext()) {
+
+				do {
+					objStudent = new JSONObject();
+					
+					try {
+						objStudent.put("ID", String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						objStudent.put("AppID", cursor.getString(cursor.getColumnIndex("AppID")));
+						objStudent.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
+						objStudent.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
+						objStudent.put("Flag", cursor.getString(cursor.getColumnIndex("Flag")));
+						listMSG.add(objStudent);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} while (cursor.moveToNext());
+			}
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return listMSG;
+	}
+	public ArrayList<JSONObject> getMSGlast(String AppID) {
+		String sqlCards;
+		sqlCards = String.format(ISql.GET_MSG_LAST,Integer.parseInt(AppID));
+		Cursor cursor = execQuery(sqlCards);
+
+		ArrayList<JSONObject> listMSG = new ArrayList<JSONObject>();
+		JSONObject objStudent;
+		
+		if (cursor != null && cursor.getCount() > 0) {
+
+			if (cursor.moveToNext()) {
+
+				do {
+					objStudent = new JSONObject();
+					
+					try {
+						objStudent.put("ID", String.valueOf(cursor.getInt(cursor.getColumnIndex("ID"))));
+						objStudent.put("AppID", cursor.getString(cursor.getColumnIndex("AppID")));
+						objStudent.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
+						objStudent.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
+						objStudent.put("Flag", cursor.getString(cursor.getColumnIndex("Flag")));
+						listMSG.add(objStudent);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} while (cursor.moveToNext());
+			}
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return listMSG;
+	}
 	public String getMyNick()
 	{	//JSONObject objPeer;
 		String myNick = null ;
@@ -331,8 +455,11 @@ public class AppDB extends DBConnect {
 		int test = updatePC(status, AppID);
 		System.out.println("PC Updated with message: "+test+"<-----");
 	}
-	
-	
+	public void updpeer(String AppID,String Nick, String IP)
+	{
+		int test = updatepeertable(Nick, IP, AppID);
+		System.out.println("Peers Updated with message: "+test+"<-----");
+	}
 	public int countChatReq()
 	{
 		Cursor cursor = execQuery(ISql.COUNT_CHATREQ);
@@ -425,6 +552,43 @@ public class AppDB extends DBConnect {
 		return listPeer;
 	}
 	
+	
+	public ArrayList<JSONObject> getPeers(String pc) {
+		String sqlRemoveRegCard = String.format(ISql.GET_PEER_PC, Integer.parseInt(pc));
+		Cursor cursor = execQuery(sqlRemoveRegCard);
+		ArrayList<JSONObject> listPeer = new ArrayList<JSONObject>();
+		JSONObject objPeer;
+		
+		if (cursor != null && cursor.getCount() > 0) {
+
+			if (cursor.moveToNext()) {
+
+				do {
+					objPeer = new JSONObject();
+					
+					try {
+						objPeer.put("AppID", String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
+						objPeer.put("Nick", cursor.getString(cursor.getColumnIndex("Nick")));
+						objPeer.put("MAC", cursor.getString(cursor.getColumnIndex("MAC")));
+						objPeer.put("IP", cursor.getString(cursor.getColumnIndex("IP")));
+						objPeer.put("PC", String.valueOf(cursor.getInt(cursor.getColumnIndex("PC"))));
+						objPeer.put("Block", String.valueOf(cursor.getInt(cursor.getColumnIndex("Block"))));
+						listPeer.add(objPeer);
+					} catch (JSONException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				} while (cursor.moveToNext());
+			}
+		}
+
+		if (cursor != null) {
+			cursor.close();
+		}
+
+		return listPeer;
+	}
 	
 	public ArrayList<JSONObject> getPremium() {
 		Cursor cursor = execQuery(ISql.GET_PREMIUM);
