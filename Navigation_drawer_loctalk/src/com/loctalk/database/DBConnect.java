@@ -208,12 +208,25 @@ public class DBConnect extends SQLiteOpenHelper {
 	 * updated upvote func
 	 */
 
-	public synchronized int updateAdd(String values, String adContent, String appID){
+	public synchronized int updateAdd(String values, String adContent, String Liked){
 		ContentValues cv = new ContentValues();
 		cv.put("Vote", values);
-		String where = "AppID=? AND Content=?";
-		String whereArgs[] = new String[]{appID,adContent};
+		cv.put("Liked", Integer.parseInt(Liked));
+		String where = "Content=?";
+		String whereArgs[] = new String[]{adContent};
 		int n = db.update("Premium", cv, where, whereArgs);
+		System.out.println("updating ad===="+adContent+"==Yo=="+n);
+		return n;
+		}
+	
+	public synchronized int updateAdd2(String values, String adContent){
+		ContentValues cv = new ContentValues();
+		cv.put("Vote", values);
+		//cv.put("Liked", Integer.parseInt(Liked));
+		String where = "Content=?";
+		String whereArgs[] = new String[]{adContent};
+		int n = db.update("Premium", cv, where, whereArgs);
+		System.out.println("updating ad===="+adContent+"==Yo=="+n);
 		return n;
 		}
 	
