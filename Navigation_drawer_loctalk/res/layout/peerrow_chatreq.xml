@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ViewFlipper  xmlns:android="http://schemas.android.com/apk/res/android"
+   	android:id="@+id/flipper"
+   	android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:orientation="horizontal"
+    android:padding="5dip" >
+          
+	<include
+         android:id="@+id/main"
+         layout="@layout/first" />
+    
+     <include
+         android:id="@+id/second"
+         layout="@layout/peerrow_accepted" />
+     <include 
+         android:id="@+id/third"
+         layout="@layout/peerrow_rejected" />
+ </ViewFlipper>
+ 
