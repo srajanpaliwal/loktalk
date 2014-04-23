@@ -26,7 +26,9 @@ public class AppDB extends DBConnect {
 			sqlCards = String.format(ISql.INSERT_MSG, Integer.parseInt(objStudent.getString("ID")), 
 					Integer.parseInt(objStudent.getString("AppID")), 
 					objStudent.getString("Content"),
-					objStudent.getString("Time"));
+					objStudent.getString("Time"),
+					objStudent.getString("Nick")
+					);
 					
 			
 			execNonQuery(sqlCards);			
@@ -59,7 +61,9 @@ public class AppDB extends DBConnect {
 					Integer.parseInt(objStudent.getString("AppID")), 
 					objStudent.getString("Content"),
 					objStudent.getString("Time"),
-					objStudent.getString("Category"));
+					objStudent.getString("Category"),
+					objStudent.getString("Nick")
+					);
 					
 			
 			execNonQuery(sqlCards);			
@@ -99,6 +103,7 @@ public class AppDB extends DBConnect {
 						objStudent.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
 						objStudent.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
 						objStudent.put("Category", cursor.getString(cursor.getColumnIndex("Category")));
+						objStudent.put("Nick", cursor.getString(cursor.getColumnIndex("Nick")));
 						listPost.add(objStudent);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
@@ -419,6 +424,7 @@ public class AppDB extends DBConnect {
 						objStudent.put("AppID", cursor.getString(cursor.getColumnIndex("AppID")));
 						objStudent.put("Content", cursor.getString(cursor.getColumnIndex("Content")));
 						objStudent.put("Time", cursor.getString(cursor.getColumnIndex("Time")));
+						objStudent.put("Nick", cursor.getString(cursor.getColumnIndex("Nick")));
 						listMsg.add(objStudent);
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block

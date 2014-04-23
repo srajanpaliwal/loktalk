@@ -539,7 +539,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String ID=(db.countPremium()+1)+"";
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
-					dbFunctions.addonetoaddb(ID, parsedStr[0],parsedStr[2], time, parsedStr[3]);
+					dbFunctions.addonetoaddb(ID, parsedStr[0],parsedStr[2], time, parsedStr[3],parsedStr[1] );
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postAd");
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",parsedStr[2]);
@@ -550,7 +550,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String ID=(db.countPost()+1)+"";
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0],msg.toString(), time, parsedStr[3]);
+					dbFunctions.addtopostdb(ID, parsedStr[0],msg.toString(), time, parsedStr[3],parsedStr[1]);
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postGen");
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",msg.toString());
@@ -560,7 +560,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String ID=(db.countPost()+1)+"";
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3],parsedStr[1]);
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postEvent");
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",msg.toString());
@@ -571,7 +571,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String ID=(db.countPost()+1)+"";
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3],parsedStr[1]);
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postHelp");
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",msg.toString());
@@ -581,7 +581,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String ID=(db.countPost()+1)+"";
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3],parsedStr[1]);
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postBusi");
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",msg.toString());
@@ -591,7 +591,7 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String ID=(db.countPost()+1)+"";
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
-					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3]);
+					dbFunctions.addtopostdb(ID, parsedStr[0], msg.toString(), time, parsedStr[3],parsedStr[1]);
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postFood");
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",msg.toString());
