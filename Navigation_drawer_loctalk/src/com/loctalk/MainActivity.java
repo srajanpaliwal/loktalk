@@ -346,6 +346,18 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 				makeFrag(position,"perchat", fragment);
 			}
 			break;
+		case 11:
+			if(fragmentList.get(11)==null){
+				fragment=new SettingsFragment();
+				fragmentList.set(8, fragment);
+				makeFrag(position,"settings", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(11);
+				makeFrag(position,"settings", fragment);
+			}
+			break;
 		case 2:
 			if(fragmentList.get(2)==null){
 				fragment=new groupFragment();

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/about_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp"
+        android:layout_marginBottom="20dp"
+        android:height="25sp"
+        android:text="Loc-Talk v1.0"
+        android:textColor="#ff0000ff"
+        android:textSize="25dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <ImageView
+        android:id="@+id/about_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_title"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/about_copyright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/about_img"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dip"
+        android:height="25sp"
+        android:text="\@Copyright ABC.Ltd"
+        android:textColor="#ff0000ff"
+        android:textSize="15dip"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+</RelativeLayout>
