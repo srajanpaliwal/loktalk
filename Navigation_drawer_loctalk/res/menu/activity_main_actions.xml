@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <!-- Search / will display always this  -->
+   
+    	   
+    <item android:id="@+id/action_cancel"
+          android:orderInCategory="100"
+          android:icon="@drawable/ic_action_cancel"
+          android:showAsAction="ifRoom"/>
+     
+     
+      
+    
+</menu>

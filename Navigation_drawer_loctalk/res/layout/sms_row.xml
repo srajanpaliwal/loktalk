@@ -16,5 +16,8 @@
         android:text="Medium Text"
         android:textColor="@color/textColor"
         android:textSize="20sp" />
+ 
+     
+    
 
 </LinearLayout>
