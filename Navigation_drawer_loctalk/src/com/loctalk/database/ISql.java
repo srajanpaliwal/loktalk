@@ -6,8 +6,8 @@ public interface ISql {
 	String GET_MSG = "SELECT ID,AppID,Content,Time,Flag FROM Messages WHERE AppID= %d";
 	String GET_MSG_LAST = "SELECT ID,AppID,Content,Time,Flag FROM Messages WHERE AppID= %d ORDER BY ID DESC LIMIT 1";
 	String GET_AppID_MSG = "SELECT DISTINCT AppID FROM Messages";
-	String INSERT_Post = "INSERT OR REPLACE INTO Posts(ID, AppID, Content, Time,Category) values (%d, %d, '%s', '%s','%s')";
-	String GET_Post = "SELECT ID,AppID,Content,Time,Category FROM Posts where Category='%s'";
+	String INSERT_Post = "INSERT OR REPLACE INTO Posts(ID, AppID, Content, Time,Category,  Nick) values (%d, %d, '%s', '%s','%s', '%s')";
+	String GET_Post = "SELECT ID,AppID,Content,Time,Category,Nick FROM Posts where Category='%s'";
 	String COUNT_Post = "SELECT count(ID) from Posts";
 	String REMOVE_MSG = "DELETE FROM Messages WHERE ID = %d";
 	String COUNT_MSG = "SELECT count(ID) from Messages";
@@ -26,10 +26,12 @@ public interface ISql {
 	String INSERT_MYNICK = "INSERT OR REPLACE INTO myNickTbl(nick) values ('%s')";
 	String GET_MYNICK = "SELECT nick FROM myNickTbl";
 	
-	String INSERT_PREMIUM = "INSERT OR REPLACE INTO Premium(ID,AppID, Content, Time, Vote) values (%d, %d,'%s', '%s', %d)";
-	String GET_PREMIUM = "SELECT ID,AppID,Content,Time,Vote FROM Premium";
+	String INSERT_PREMIUM = "INSERT OR REPLACE INTO Premium(ID, Nick, AppID, Content, Time, Vote, Liked) values (%d, '%s', %d,'%s', '%s', %d, %d)";
+	String GET_PREMIUM = "SELECT ID,Nick,AppID,Content,Time,Vote,Liked FROM Premium";
 	String REMOVE_PREMIUM = "DELETE FROM Premium WHERE ID = %d";
 	String GET_P_COUNT = "SELECT Vote FROM Premium WHERE ID = %d AND AppID = %d";
 	String GET_P_SENDER = "SELECT AppID FROM Premium WHERE ID = %d";
 	String COUNT_PREMIUM = "SELECT count(ID) from Premium";
+	String GET_ONE_PREMIUM = "SELECT ID,Nick,AppID,Content,Time,Vote,Liked FROM Premium WHERE ID = %d";
+	String GET_CONTENT_PREMIUM = "SELECT ID,Nick,AppID,Content,Time,Vote,Liked FROM Premium WHERE Content = '%s'";
 }

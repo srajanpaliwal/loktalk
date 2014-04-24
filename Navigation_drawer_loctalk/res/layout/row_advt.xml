@@ -1,12 +1,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="6dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:paddingBottom="0dp" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:weightSum="100" >
@@ -27,31 +27,72 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dip"
-            android:layout_weight="90"
+            android:layout_weight="97"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dip"
-                android:fontFamily="sans-serif-thin"
-                android:text="@string/title"
-                android:textColor="#33B6EA"
-                android:textSize="24sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/description"
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dip"
+                    android:fontFamily="sans-serif-thin"
+                    android:text="@string/title"
+                    android:textColor="#33B6EA"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/uvCounter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:background="@drawable/counter_bg"
+                    android:text="1"
+                    android:textColor="@color/counter_text_color" />
+
+                <ImageButton
+                    android:id="@+id/buttonUpvote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_toLeftOf="@+id/uvCounter"
+                    android:background="@android:color/transparent"
+                    android:clickable="true"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/upvote" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="8dip"
-                android:layout_marginRight="48dip"
-                android:ellipsize="end"
-                android:fontFamily="sans-serif-light"
-                android:maxLines="3"
-                android:text="@string/desc"
-                android:textSize="16sp" />
+                android:layout_height="match_parent" >
+
+               
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="48dip"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif-light"
+                    android:maxLines="3"
+                    android:text="@string/desc"
+                    android:textSize="16sp" />
+                
+                
+                
+                
+                
+            </RelativeLayout>
+
         </LinearLayout>
 
       <!--   <LinearLayout
@@ -69,5 +110,6 @@
                 android:padding="2dip"
                 android:src="@drawable/ic_menu_moreoverflow_normal_holo_light" />
         </LinearLayout> -->
+
     </LinearLayout>
 </LinearLayout>

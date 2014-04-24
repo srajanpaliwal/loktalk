@@ -31,7 +31,7 @@ public class dbFunc {
 		return listPremium.toString();
 	}
 	
-	public void addonetoaddb(String id, String appID, String content, String time, String vote){
+	public void addonetoaddb(String id, String appID, String content, String time, String vote, String Nick){
 		
 		System.out.println("function addtoaddb() called!!!");
 		JSONObject objPremium = new JSONObject();
@@ -42,6 +42,7 @@ public class dbFunc {
 			objPremium.put("Content", content);
 			objPremium.put("Time", time);
 			objPremium.put("Vote", vote);
+			objPremium.put("Nick",Nick);
 			System.out.println("Jason string for db==>>"+"\n"+objPremium.toString());
 			db.insertPremium(objPremium);
 			
@@ -98,7 +99,7 @@ public void addtoaddb(String dbString) throws JSONException{
 		/*
 		 * method to add the peers in the table(contained in database-loctalk.sqlite)- "Peers".
 		 */
-		System.out.println("function addtopeerdb() called!!!");
+		System.out.println("function addtopeerdb() called!!!"+appID);
 		JSONObject objPeer = new JSONObject();
 				ip=ip.replaceFirst("/", "");
 		try {
@@ -146,7 +147,7 @@ public void addtoaddb(String dbString) throws JSONException{
 	
 	}
 	}
-public void addtopostdb(String ID, String AppID, String Content, String Time,String Category){
+public void addtopostdb(String ID, String AppID, String Content, String Time,String Category, String Nick){
 		
 		/*
 		 * Method to add post to the table-"Post".
@@ -160,6 +161,7 @@ public void addtopostdb(String ID, String AppID, String Content, String Time,Str
 			obj.put("Content", Content);
 			obj.put("Time", Time);
 			obj.put("Category", Category);
+			obj.put("Nick",Nick);
 			System.out.println("Jason string for post DB==>>"+"\n"+obj.toString());
 			db.insertPost(obj);
 		} catch (JSONException e) {
@@ -227,13 +229,11 @@ public ArrayList<Message1> getpostdb(String Category){
 		
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
-		e.printStackTrace();
-		System.out.println("DB error"+ e.getMessage().toString());
+		System.out.println("DB error"+ e);
 	}
 	
 	return Posttoreturn;
 }
-
 public ArrayList<Message1> getMSGdb(String AppI){
 	
 	/*
@@ -279,8 +279,8 @@ public ArrayList<Message1> getMSGdb(String AppI){
 	
 	return MSGtoreturn;
 }
-	public void addtomsgdb(String ID, String AppID, String Content, String Time){
-		
+
+	public void addtomsgdb(String ID, String AppID, String Content, String Time,String Nick){
 		/*
 		 * Method to add messages to the table-"Messages".
 		 */
@@ -292,6 +292,7 @@ public ArrayList<Message1> getMSGdb(String AppI){
 			obj.put("AppID", AppID);
 			obj.put("Content", Content);
 			obj.put("Time", Time);
+			obj.put("Nick", Nick);
 			System.out.println("Jason string for Msg DB==>>"+"\n"+obj.toString());
 			db.insertMsg(obj);
 		} catch (JSONException e) {

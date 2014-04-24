@@ -50,6 +50,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 		  super.onAttach(activity);
 		  Activity context = getActivity();
 		  ((MainActivity)context).datatopeerfragment = this;
+		  System.out.println("This is tempid====>>>>ololololol");
 		  //((MainActivity)context).passdatatoActivity();
 		  //System.out.println("from fragment"+((MainActivity)context).datatofragment.getClass());
 		}
@@ -72,6 +73,7 @@ public class PeersFragment extends ListFragment implements dataTransferInterface
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
 		peerName = new ArrayList<peerData>();
+		System.out.println("This is tempid====>>>>kokookokok");
 		/*peerName.add(new peerData("chomu", 2));
 		peerName.add(new peerData("totu", 1));
 		peerName.add(new peerData("somu", 0));

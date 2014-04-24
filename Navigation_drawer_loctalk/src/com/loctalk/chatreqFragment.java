@@ -69,6 +69,7 @@ public class chatreqFragment extends ListFragment implements dataTransferInterfa
 	}
 	@Override
 	public void passdatatofragment(String id, String msg) {
+		System.out.println("chatreq fragment "+id);
 		if(id.equals("removepeer"))
 		{
 			AppIDlist.remove(msg);

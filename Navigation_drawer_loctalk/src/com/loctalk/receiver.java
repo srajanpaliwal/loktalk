@@ -74,6 +74,10 @@ public class receiver extends Thread {
 		state=false;
 		return pass;
 	}
-		//socket.close();
+	
+	public void closesocket(){
+		socket.close();
 	}
+	
+}
 
