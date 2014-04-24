@@ -253,6 +253,10 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			else{
 				displayView(1);
 				myNick = db.getMyNick();
+				String adrequest = jsonFunctions1.createUltiJSON(myAppID, myNick, "need ads", "adReq");
+				
+				senMain = new sender(adrequest, getBroadcastAddress());
+				senMain.start();
 			}
 				
 		}
@@ -457,6 +461,18 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 			{
 				fragment=fragmentList.get(9);
 				makeFrag(position,"chatreq", fragment);
+			}
+			break;
+		case 11:
+			if(fragmentList.get(11)==null){
+				fragment=new SettingsFragment();
+				fragmentList.set(8, fragment);
+				makeFrag(position,"settings", fragment);
+			}
+			else
+			{
+				fragment=fragmentList.get(11);
+				makeFrag(position,"settings", fragment);
 			}
 			break;
 		default:

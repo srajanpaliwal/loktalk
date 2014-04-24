@@ -29,7 +29,10 @@
         
         <service android:enabled="true"  android:name="com.loctalk.receiverser" />
       
-      
+      <activity        android:name="com.loctalk.about"
+          				android:theme="@style/AppTheme"
+           />
+     
     </application>
 
 </manifest>

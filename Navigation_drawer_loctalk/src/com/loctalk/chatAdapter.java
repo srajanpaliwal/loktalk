@@ -2,11 +2,6 @@ package com.loctalk;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-
-
-
-
-
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;

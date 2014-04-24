@@ -7,9 +7,7 @@ import static com.loctalk.Constant.dbFunctions;
 import static com.loctalk.Constant.jsonFunctions1;
 import static com.loctalk.Constant.myAppID;
 import static com.loctalk.Constant.myNick;
-
 import org.json.JSONObject;
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,8 +18,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ListView;
-
-
 public class Addfragment  extends ListFragment {
 
 
@@ -102,7 +98,6 @@ public class Addfragment  extends ListFragment {
 		while(i<=array.size()-1){
 			temp = array.get(i);
 			try{
-
 			System.out.println("====Ads from db===");
 			System.out.println("Ad ID = " + temp.getString("ID"));
 			System.out.println("Ad Nick = " + temp.getString("Nick"));
