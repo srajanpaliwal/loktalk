@@ -3,55 +3,60 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:text="Nick: "
-        android:layout_marginLeft="5dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+    android:orientation="vertical" 
+    android:layout_marginBottom="10dp">
 
      <EditText
          android:id="@+id/location"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
+         android:layout_alignLeft="@+id/textView1"
+         android:layout_alignRight="@+id/dialogButtonCancel"
          android:layout_below="@+id/textView1"
-         android:layout_centerHorizontal="true"
+         android:layout_marginTop="16dp"
          android:ems="10"
          android:hint="Enter your nick"
-         android:maxLength="10"
          android:inputType="text"
-          />
+         android:maxLength="10" >
+
+         <requestFocus />
+     </EditText>
+
+     <TextView
+         android:id="@+id/textView1"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:layout_alignParentTop="true"
+         android:layout_marginLeft="36dp"
+         android:text="Nick: "
+         android:textAppearance="?android:attr/textAppearanceLarge" />
 
      <Button
-         android:id="@+id/dialogButtonCancel"
-         android:layout_width="wrap_content"
+         android:id="@+id/dialogButtonOK"
+         android:layout_width="80dp"
          android:layout_height="40dp"
-         android:layout_alignBaseline="@+id/dialogButtonOK"
-         android:layout_alignBottom="@+id/dialogButtonOK"
-         android:layout_alignParentRight="true"
-         android:layout_marginRight="40dp"
+         android:layout_alignLeft="@+id/location"
+         android:layout_below="@+id/location"
+         android:layout_marginTop="25dp"
          android:layout_weight="1"
-         android:background="#C0392B"
-         android:text="Cancel"
+         android:background="#15AFE5"
+         android:text="Go"
          android:textColor="#ffffff"
          android:textSize="22dp" />
 
      <Button
-         android:id="@+id/dialogButtonOK"
-         android:layout_width="wrap_content"
+         android:id="@+id/dialogButtonCancel"
+         android:layout_width="80dp"
          android:layout_height="40dp"
-         android:layout_alignParentLeft="true"
-         android:layout_below="@+id/location"
+         android:layout_alignBaseline="@+id/dialogButtonOK"
+         android:layout_alignBottom="@+id/dialogButtonOK"
+         android:layout_alignParentRight="true"
+         android:layout_marginRight="36dp"
          android:layout_weight="1"
-         android:background="#C0392B"
-         android:text="Go"
+         android:background="#F6BD2F"
+         android:text="Cancel"
          android:textColor="#ffffff"
-         android:layout_marginLeft="40dp"
          android:textSize="22dp" />
 
 </RelativeLayout>
