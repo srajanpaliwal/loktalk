@@ -40,6 +40,7 @@ import android.telephony.TelephonyManager;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -293,23 +294,41 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.activity_main_actions, menu);
+        
+        getSupportActionBar().show();
+		return super.onCreateOptionsMenu(menu);
+		//return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+
+		 Toast toast;
+	        if(item.getItemId() == R.id.action_cancel){
+	        	toast = Toast.makeText(this, "Block Clicked!", Toast.LENGTH_SHORT);
+	            toast.show();
+	        }
+	 
 		// toggle nav drawer on selecting action bar app icon/title
 		if (mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
-		// Handle action bar actions click
+		
+
+	        
+		/*// Handle action bar actions click
 		switch (item.getItemId()) {
 		case R.id.action_settings:
 			return true;
-		default:
+		default:*/
+		 if(item.getItemId() == R.id.action_cancel)
+		 {
+			return true;
+	 }
 			return super.onOptionsItemSelected(item);
-		}
+
 	}
 
 	/* *
@@ -318,9 +337,11 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		// if nav drawer is opened, hide the action items
-		boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-		menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
-		return super.onPrepareOptionsMenu(menu);
+				//boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+				//menu.findItem(R.id.action_settings).setVisible(!drawerOpen);
+				//menu.getItem(0).setIcon(R.drawable.ic_action_cancel);
+				return super.onPrepareOptionsMenu(menu);
+
 	}
 
 	/**
