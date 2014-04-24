@@ -1,9 +1,14 @@
 package com.loctalk;
 
+
 import static com.loctalk.Constant.db;
-
 import java.util.ArrayList;
-
+import java.util.ArrayList;
+import static com.loctalk.Constant.db;
+import static com.loctalk.Constant.dbFunctions;
+import static com.loctalk.Constant.jsonFunctions1;
+import static com.loctalk.Constant.myAppID;
+import static com.loctalk.Constant.myNick;
 import android.content.Context;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -50,8 +55,6 @@ public class AdAdapter extends BaseAdapter {
 			View vi = convertView;
 
             vi = LayoutInflater.from(lcontext).inflate(R.layout.row_advt, parent, false);
-            
-
           TextView title = (TextView) vi.findViewById(R.id.title);
           TextView description = (TextView) vi.findViewById(R.id.description);
           final TextView uvCounter = (TextView) vi.findViewById(R.id.uvCounter);
@@ -59,6 +62,12 @@ public class AdAdapter extends BaseAdapter {
           final ImageButton imageButton = (ImageButton) vi.findViewById(R.id.buttonUpvote);
          
           final single_row list = llist.get(position);
+          if(list.liked==1){
+        	  imageButton.setImageResource(R.drawable.up11);
+          }
+          else if(list.liked==0){
+        	  imageButton.setImageResource(R.drawable.upvote);
+          }
           title.setText(list.title);
           description.setText(list.description);
           vi.setOnLongClickListener(new OnLongClickListener() {
@@ -118,20 +127,12 @@ public class AdAdapter extends BaseAdapter {
 
 					// pass the position via handler
 					mHandler.obtainMessage(1,sendtoadfrag).sendToTarget();
-
 				}
 
 			}
-		});
-          
-            
+		}); 
           return vi;
 	}
-
-
-
-
-
 	@Override
 	public long getItemId(int position) {
 		// TODO Auto-generated method stub
@@ -166,14 +167,5 @@ public void add(String title , String description,String uvCounter, int liked){
 	this.liked = liked;
 	return;
 }
-
-
-
-
-
-
-
-
-
 
 	}

@@ -22,7 +22,6 @@ public interface ISql {
 	String GET_ONEPEER = "SELECT AppID,Nick,IP,PC,Block FROM Peers WHERE AppID = %d";
 	String INSERT_CHATREQ = "INSERT OR REPLACE INTO ChatReq(AppID, Nick, MAC, IP, PC, Block) values (%d, '%s', '%s', '%s', %d, %d)";
 	String COUNT_CHATREQ = "SELECT count(AppID) from ChatReq";
-	
 	String INSERT_MYNICK = "INSERT OR REPLACE INTO myNickTbl(nick) values ('%s')";
 	String GET_MYNICK = "SELECT nick FROM myNickTbl";
 	String INSERT_PREMIUM = "INSERT OR REPLACE INTO Premium(ID, Nick, AppID, Content, Time, Vote, Liked) values (%d, '%s', %d,'%s', '%s', %d, %d)";

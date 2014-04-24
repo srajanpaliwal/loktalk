@@ -7,8 +7,10 @@ import static com.loctalk.Constant.jsonFunctions1;
 import static com.loctalk.Constant.myAppID;
 import static com.loctalk.Constant.myNick;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.loctalk.database.AppDB;
@@ -32,6 +34,9 @@ import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.telephony.TelephonyManager;
+import android.text.InputType;
+import android.text.style.UpdateLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,12 +57,12 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	private ActionBarDrawerToggle mDrawerToggle;
 	// nav drawer title
 	private CharSequence mDrawerTitle;
+	public static String brAddress;
 	// used to store app title
 	private CharSequence mTitle;
 	private String[] navMenuTitles;
 	private TypedArray navMenuIcons;
 	public static boolean active=false;
-	public static String brAddress;
 	private ArrayList<NavDrawerItem> navDrawerItems;
 	private ArrayList<String> adRepliers = new ArrayList<String>();
 	private NavDrawerListAdapter navadapter;
@@ -91,6 +96,13 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		}
 		
 		//super.onCreate(savedInstanceState);
+//=======
+//		super.onCreate(savedInstanceState);
+//		//super.onCreate(savedInstanceState);
+//		brAddress = getBroadcastAddress();
+//		receiverthread=new receiver(mHandler);
+//		receiverthread.start();
+//>>>>>>> refs/remotes/origin/last_branch_promise
 		setContentView(R.layout.activity_main);
 		System.out.println("Layout ke baad wala");
 		//Initialization of database constants
@@ -140,13 +152,13 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		
 		navMenuIcons.recycle();
 		
+		
 		mDrawerList.setOnItemClickListener(new SlideMenuClickListener());
 
 		// setting the nav drawer list adapter
 		navadapter = new NavDrawerListAdapter(getApplicationContext(),
 				navDrawerItems);
 		mDrawerList.setAdapter(navadapter);
-
 		// enabling action bar app icon and behaving it as toggle button
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		getSupportActionBar().setHomeButtonEnabled(true);
@@ -160,12 +172,17 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 			public void onDrawerClosed(View view) {
 				getSupportActionBar().setTitle(mTitle);
 				// calling onPrepareOptionsMenu() to show action bar icons
+				navMenuTitles[0] = myNick;
+				navadapter.notifyDataSetChanged();
 				supportInvalidateOptionsMenu();
+				
 			}
 
 			public void onDrawerOpened(View drawerView) {
 				getSupportActionBar().setTitle(mDrawerTitle);
 				// calling onPrepareOptionsMenu() to hide action bar icons
+				navMenuTitles[0] = myNick;
+				navadapter.notifyDataSetChanged();
 				supportInvalidateOptionsMenu();
 			}
 		};
@@ -298,7 +315,11 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+		
+		
 	}
+	
+	
 
 	/* *
 	 * Called when invalidateOptionsMenu() is triggered
@@ -781,11 +802,9 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					 db.updatemyNick(loc);
 					 myNick = loc;
 					 System.out.println("updated nick===="+myNick);
-
 					 String changenickstr = jsonFunctions1.createUltiJSON(myAppID, myNick, "mynick changed", "nickChange");
 					 senMain = new sender(changenickstr, getBroadcastAddress());
 					 senMain.start();
-		
 				 }
 				 else{
 		 			 Toast mtoast = Toast.makeText(MainActivity.this, "Please enter a valid Nick.", Toast.LENGTH_LONG);

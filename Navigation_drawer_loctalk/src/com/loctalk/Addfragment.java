@@ -51,7 +51,6 @@ public class Addfragment  extends ListFragment {
 	    	 */
 	    	single_row sr = llist.get(Integer.parseInt(handleStr[0]));
 	    	ids idid = adID.get(Integer.parseInt(handleStr[0]));
-
 	    	db.updateAdd(handleStr[1], sr.description,handleStr[2]);
 	    	System.out.println("content to be queried==="+sr.description);
 	    	String toS = handleStr[2]+"uuu"+sr.description;
@@ -100,9 +99,6 @@ public class Addfragment  extends ListFragment {
 		llist.add(new single_row("hello4", "tamatar le lo","0"));
 */
 		//list.setAdapter(new AdAdapter(getActivity(), llist));
-
-
-
 		while(i<=array.size()-1){
 			temp = array.get(i);
 			try{
@@ -141,3 +137,4 @@ public class Addfragment  extends ListFragment {
 
 
 	}
+

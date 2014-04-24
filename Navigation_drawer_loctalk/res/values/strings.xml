@@ -39,11 +39,11 @@
      <array name="nav_drawer_icons">
         <item>@drawable/ic_action_person</item>
         <item>@drawable/shopping_bag</item>
-        <item>@drawable/agt_announcements</item>
+        <item>@drawable/bhopu</item>
         <item>@drawable/dance</item>
         <item>@drawable/ic_action_help</item>
         <item>@drawable/coin_dollar</item>
-        <item>@drawable/icon_food_01</item>
+        <item>@drawable/icon_food</item>
         <item>@drawable/ic_action_cc_bcc</item>
         <item>@drawable/ic_action_name</item>
       <item>@drawable/ic_action_add_person</item>

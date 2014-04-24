@@ -2,11 +2,8 @@ package com.loctalk;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -93,5 +90,4 @@ public class personalchat extends ListFragment {
 	public void setHandler(Handler hand){
 		Hand=hand;
 	}
-	
 }

@@ -480,6 +480,7 @@ public class AppDB extends DBConnect {
 		}
 
 	
+
 	public void updVote(String toAdd, String content){
 		int prevVote;
 		if(content.length()!=0)
@@ -513,7 +514,6 @@ public class AppDB extends DBConnect {
 
 
 	}
-	
 	public int countChatReq()
 	{
 		Cursor cursor = execQuery(ISql.COUNT_CHATREQ);
@@ -800,7 +800,6 @@ public class AppDB extends DBConnect {
 					objPremium.getString("Content"),
 					objPremium.getString("Time"),
 					Integer.parseInt(objPremium.getString("Vote")),0); //liked or not
-
 			System.out.println("Inserted into premium DB==="+objPremium.getString("AppID"));
 
 			execNonQuery(sqlCards);			
