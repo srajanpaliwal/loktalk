@@ -613,15 +613,16 @@ public class AppDB extends DBConnect {
 		Cursor cursor = execQuery(sqlRemoveRegCard);
 		ArrayList<JSONObject> listPeer = new ArrayList<JSONObject>();
 		JSONObject objPeer;
-		
 		if (cursor != null && cursor.getCount() > 0) {
 
 			if (cursor.moveToNext()) {
 
 				do {
+
 					objPeer = new JSONObject();
 					
 					try {
+
 						objPeer.put("AppID", String.valueOf(cursor.getInt(cursor.getColumnIndex("AppID"))));
 						objPeer.put("Nick", cursor.getString(cursor.getColumnIndex("Nick")));
 						objPeer.put("MAC", cursor.getString(cursor.getColumnIndex("MAC")));
@@ -632,6 +633,7 @@ public class AppDB extends DBConnect {
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+						System.out.println("Err in getpremium=="+e);
 					}
 					
 				} while (cursor.moveToNext());

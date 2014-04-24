@@ -203,8 +203,12 @@ public class DBConnect extends SQLiteOpenHelper {
 		}
 		return cursor;
 	}
-
 	
+	/*
+	 * updated upvote func
+	 */
+
+
 	public synchronized int updateNickChatreq(String values, String appID){
 		ContentValues cv = new ContentValues();
 		cv.put("Nick", values);
