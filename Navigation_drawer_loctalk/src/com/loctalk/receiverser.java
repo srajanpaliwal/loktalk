@@ -31,6 +31,9 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.widget.Toast;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
 
 public class receiverser extends Service {
 
@@ -42,6 +45,9 @@ public class receiverser extends Service {
 	//TextView textv;
 	public static Handler mHandler;
 	public boolean state=false;
+	private static Context context;
+	private static Intent myIntent;
+	private static NotificationBuilder chatRequest ;
 	String pass;
 	sender senMain; 
 	MainActivity ma = new MainActivity();
@@ -201,6 +207,16 @@ public class receiverser extends Service {
 					Calendar c = Calendar.getInstance(); 
 					String time=c.getTime().toString();
 					dbFunctions.addtopostdb(ID, parsedStr[0],msg.toString(), time, parsedStr[3],parsedStr[1]);
+					context = getApplicationContext();
+					myIntent = new Intent(context, MainActivity.class);
+					if(MainActivity.active == false)
+						{chatRequest = new NotificationBuilder(1,"New Message",parsedStr[2],"You have a message from "+parsedStr[1],context,myIntent);
+					}
+					/*else
+					{myIntent = new Intent();
+						chatRequest = new NotificationBuilder(1,"New Message: mainactivityopened",parsedStr[2],"You have a message from "+parsedStr[1],context,myIntent);
+					}*/
+					chatRequest.NotifyNotification();
 					
 				}
 
@@ -248,6 +264,16 @@ public class receiverser extends Service {
 					int id = Integer.parseInt(parsedStr[0]);
 					String[] pcdata = db.getOnePeer(id);
 					System.out.println("chatreq "+id);
+					context = getApplicationContext();
+					myIntent = new Intent(context, MainActivity.class);
+					if(MainActivity.active == false)
+					{chatRequest = new NotificationBuilder(2,"New Chat Request",parsedStr[2],"You have a chat request from "+parsedStr[1],context,myIntent);
+				}
+				/*else
+				{myIntent = new Intent();
+					chatRequest = new NotificationBuilder(1,"New Chat Request: mainactivityopened",parsedStr[2],"You have a chat request from "+parsedStr[1],context,myIntent);
+				}*/
+					chatRequest.NotifyNotification();
 					if(pcdata==null)
 					{
 						System.out.println("chatreq ififififif"+id);

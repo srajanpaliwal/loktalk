@@ -70,6 +70,8 @@ public class MainActivity extends ActionBarActivity implements dataTransfertoAct
 	receiver receiverthread;
 	receiverser recser;
 	sender senMain;
+	private static Context context;
+	private static Intent myIntent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -600,6 +602,10 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String time=c.getTime().toString();
 					dbFunctions.addtopostdb(ID, parsedStr[0],msg.toString(), time, parsedStr[3],parsedStr[1]);
 					Fragment frag=getSupportFragmentManager().findFragmentByTag("postGen");
+					context = getApplicationContext();
+					myIntent = new Intent();
+					NotificationBuilder chatRequest = new NotificationBuilder(1,"New Message: mainactivityopened",parsedStr[2],"You have a message from "+parsedStr[1],context,myIntent);
+					chatRequest.NotifyNotification();
 					if(frag.isVisible())
 					datatofragment.passdatatofragment("message",msg.toString());
 				}
@@ -660,6 +666,8 @@ ArrayList<ListFragment> fragmentList=new ArrayList<ListFragment>();
 					String[] pcdata = db.getOnePeer(id);
 					System.out.println("chatreq "+id);
 					Fragment fragm=getSupportFragmentManager().findFragmentByTag("chatreq");
+					NotificationBuilder chatRequest = new NotificationBuilder(2,"New Chat Request: mainactivityopened",parsedStr[2],"You have a chat request from "+parsedStr[1],context,myIntent);
+					chatRequest.NotifyNotification();
 					if(pcdata==null)
 					{
 						System.out.println("chatreq ififififif"+id);
